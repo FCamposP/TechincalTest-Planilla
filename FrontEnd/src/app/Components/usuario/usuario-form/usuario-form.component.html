@@ -1,0 +1,57 @@
+<p-tabView>
+    <p-tabPanel header="Detalles de usuario" class="line-height-3 m-0" leftIcon="pi pi-user"
+        tooltip="Detalles de usuario">
+        <div class="grid p-fluid">
+            <div class="field col-12 md:col-6">
+                <label htmlFor="empleadoId">Empleado</label>
+                <p-dropdown [options]="listaEmpleados" [(ngModel)]="empleadoSelected" optionLabel="nombre" [filter]="true" filterBy="nombre" [showClear]="true" 
+                    placeholder="Seleccionar empleado" id="empleadoId"></p-dropdown>
+                <small class="ng-dirty ng-invalid"
+                    *ngIf="submitted && !registro.empleadoId && registro.empleadoId!=-1">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="descripcion">Username</label>
+                <input pInputText id="descripcion" [(ngModel)]="registro.userName" required type="text"
+                    [ngClass]="{'ng-invalid ng-dirty': submitted && !registro.userName}" />
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !registro.userName">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="field col-12 md:col-12">
+                <button pButton pRipple label="Configurar contraseña" icon="pi pi-key" class="p-button-secondary mr-2 mb-2" (click)="cambiarPassword()"></button>
+            </div>
+        </div>
+        <!-- <div class="field">
+            <small class="ng-dirty ng-invalid" *ngIf="formError">Contraseñas no coinciden</small>
+        </div> -->
+    </p-tabPanel>
+    <p-tabPanel header="Roles asociados" class="line-height-3 m-0" leftIcon="pi pi-check-square" tooltip="Roles asociados al usuario">
+        <div class="field col-12 md:col-12">
+            <p-table
+            #dt  
+            [value]="usuarioRoles" responsiveLayout="scroll"
+            [globalFilterFields]="['nombre']"
+            [rows]="5" [paginator]="true" [rowsPerPageOptions]="[5, 10, 15]"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+            [rowHover]="true" dataKey="rolId">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="nombre">
+                      Rol <p-sortIcon field="nombre"></p-sortIcon>
+                  </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rol>
+                <tr>
+                    <td style="width: 100%; min-width: 10rem">
+                      <span class="p-column-title">Rol</span>
+                      {{ rol.nombre }}
+                  </td>
+                </tr>
+            </ng-template>
+        </p-table>
+          </div>
+    </p-tabPanel>
+</p-tabView>
+<app-footer-dialog (guardarEvent)="guardarRegistro()" (cancelarEvent)="cerrarVentana()"></app-footer-dialog>

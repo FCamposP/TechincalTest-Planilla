@@ -1,0 +1,98 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <p-toast></p-toast>
+      <div class="p-fluid">
+        <div class="grid">
+          <div class="col-12">
+            <div>
+              <div class="grid">
+                <div class="col-4">
+                  <label for="fechaInicio">Fecha inicio</label>
+                <p-calendar [showIcon]="true" id="fechaInicio" selectOtherMonths="true" [(ngModel)]="fechaInicio" (onSelect)="changeFechaInicio()"></p-calendar>
+                </div>
+                <div class="col-4">
+                  <label for="fechaFin">Fecha fin</label>
+                  <p-calendar [showIcon]="true" id="fechaFin" [(ngModel)]="fechaFin" (onSelect)="changeFechaFin()"></p-calendar>
+                </div>
+                <div class="col-4">
+                  <label htmlFor="fechaFin">&nbsp;</label>
+                  <p-button label="Buscar" styleClass="" icon="pi pi-search" type="submit" (onClick)="ObtenerRegistros()"></p-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p-table #dt [(selection)]="registrosSeleccionados" selectionMode="multiple" [value]="listaRegistros"
+        responsiveLayout="scroll" [globalFilterFields]="['modulo','informacionAdicional', 'creado']" [rows]="10" [paginator]="true"
+        [rowsPerPageOptions]="[10, 20, 30]" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros" [rowHover]="true"
+        dataKey="municipioId">
+        <ng-template pTemplate="caption">
+          <div class="grid grid-nogutter md:flex-row justify-content-between">
+            <div>
+              <h5 class="m-0">Listado de errores del sistema</h5>
+            </div>
+            <div col-12 sm:col-3 md:col-6 lg:col-3>
+            </div>
+            <div col-12 sm:col-3 md:col-6 lg:col-3>
+
+              <span class="p-input-icon-left mb-2 md:mb-0">
+                <i class="pi pi-search"></i>
+                <input type="search" pInputText placeholder="Buscar..."
+                  (input)="dt.filterGlobal($event.target.value, 'contains')">
+              </span>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="modulo">
+              Módulo <p-sortIcon field="modulo"></p-sortIcon>
+            </th>
+            <th pSortableColumn="informacionAdicional">
+              Información Adicional
+              <p-sortIcon field="informacionAdicional"></p-sortIcon>
+            </th>
+            <th pSortableColumn="creado">
+              Fecha de error
+              <p-sortIcon field="creado"></p-sortIcon>
+            </th>
+            <th>Opciones</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-registro>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="registro"></p-tableCheckbox>
+            </td>
+            <td style="width: 35%; min-width: 10rem">
+              <span class="p-column-title">Módulo</span>
+              {{ registro.modulo }}
+            </td>
+            <td style="width: 35%; min-width: 10rem">
+              <span class="p-column-title">Información Adicional</span>
+              {{ registro.informacionAdicional }}
+            </td>
+
+            <td style="width: 20%; min-width: 10rem">
+              <span class="p-column-title">Creado</span>
+              {{ registro.creado | date:'dd/MM/yyy hh:mm:ss a' }}
+            </td>
+            <td style="width: 10%; min-width: 10rem">
+              <div class="flex">
+                <button pButton pRipple icon="pi pi-eye"
+                  class="p-button-rounded p-button-danger mr-2" (click)="mostrarDetalle(registro.errorLogId)"></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<p-tabView>
+    <p-tabPanel header="Detalles de configuracion global" class="line-height-3 m-0" leftIcon="pi pi-bookmark-fill"
+        tooltip="Detalles de configuracion global">
+        <form [formGroup]="form" (ngSubmit)="onSubmit(form)" class="grid p-fluid">
+            <div class="field col-12 md:col-6">
+                <label htmlFor="tipoConfiguracionGlobalSelected">Código de configuración</label>
+                <input pInputText id="codigo" formControlName="codigo" type="text" #codigoInput/>
+                <small class="ng-dirty ng-invalid"
+                    *ngIf="form.get('codigo').invalid && (form.get('codigo').dirty || form.get('codigo').touched)">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="nombre">Nombre a mostrar</label>
+                <input pInputText id="nombre" formControlName="nombre" type="text"/>
+                <small class="ng-dirty ng-invalid" *ngIf="form.get('nombre').invalid && (form.get('nombre').dirty || form.get('nombre').touched)">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="valor">Valor</label>
+                <textarea pInputTextarea formControlName="valor" id="valor"  [rows]="5" [cols]="50" ></textarea>
+                <small class="ng-dirty ng-invalid" *ngIf="form.get('valor').invalid && (form.get('valor').dirty || form.get('valor').touched)">Este campo es
+                    requerido.</small>  
+            </div>
+            <div class="field col-12 md:col-6 flex justify-content-center gap-4">
+                <div class="custom-file-input">
+                    <input type="file" mode="basic" id="rutaImagen" chooseLabel="Choose" accept="image/*" maxFileSize="1000000" name="images[]" (change)="onUpload($event)" [disabled]="!form.get('esImagen').value"/>
+                    <label for="rutaImagen"> Seleccionar imagen </label>
+                </div>
+                <div class="esImagenContainer">
+                    <label htmlFor="esImagen">Es imagen?</label>
+                    <p-checkbox formControlName="esImagen" [binary]="true" inputId="esImagen"></p-checkbox>
+                </div>
+            </div>
+
+            <div class="flex field col-12 justify-content-center gap-2">
+                <p-button label="Guardar" styleClass="p-button-success" type="submit" [disabled]="form.invalid"></p-button>
+                <p-button label="Cerrar" styleClass="p-button-danger" (click)="cerrarVentana()"></p-button>
+            </div>
+        </form>
+    </p-tabPanel>
+</p-tabView>

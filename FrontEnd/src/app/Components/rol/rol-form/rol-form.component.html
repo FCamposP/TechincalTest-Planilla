@@ -1,0 +1,81 @@
+<p-tabView>
+  <p-tabPanel header="Detalles" class="line-height-3 m-0" leftIcon="pi pi-th-large" tooltip="Detalles del rol">
+    <div class="grid p-fluid">
+      <div class="field col-12 md:col-6">
+        <label htmlFor="nombre">Nombre</label>
+        <input pInputText id="nombre" [(ngModel)]="registro.nombre" required type="text" 
+          [ngClass]="{'ng-invalid ng-dirty': submitted && !registro.nombre}" />
+        <small class="ng-dirty ng-invalid" *ngIf="submitted && !registro.nombre">Este campo es requerido.</small>
+      </div>
+      <div class="field col-12 md:col-6">
+        <label htmlFor="descripcion">Descripción</label>
+        <input pInputText id="descripcion" [(ngModel)]="registro.descripcion" required type="text" 
+          [ngClass]="{'ng-invalid ng-dirty': submitted && !registro.descripcion}" />
+        <small class="ng-dirty ng-invalid" *ngIf="submitted && !registro.descripcion">Este campo es
+          requerido.</small>
+      </div>
+      <div class="field col-12 md:col-6">
+        <label htmlFor="esFrontOffice">Es super usuario</label><br>
+        <p-inputSwitch id="esFrontOffice" [(ngModel)]="registro.esSuperUsuario"></p-inputSwitch>
+        <small class="ng-dirty ng-invalid" *ngIf="submitted && !registro.esSuperUsuario">Este campo es
+          requerido.</small>
+      </div>
+    </div>
+
+  </p-tabPanel>
+  <p-tabPanel header="Asociar Usuarios" class="line-height-3 m-0" leftIcon="pi pi-tags" tooltip="Permisos">
+
+      <p-card >
+        <div class="grid p-fluid">
+          <div class="field col-12 md:col-6">
+            <p-dropdown [options]="listaUsuario" [(ngModel)]="usuarioElegido" placeholder="Seleccione un usuario" optionLabel="userName" [filter]="true" filterBy="userName" [showClear]="true" autofocus></p-dropdown>
+          </div>
+          <div class="field col-12 md:col-6">
+            <button pButton pRipple label="Agregar usuario" icon="pi pi-plus" class="p-button-success mr-2" (click)="agregarUsuario()"></button>
+          </div>
+          <div class="field col-12 md:col-12">
+            <p-table
+            #dt  
+            [value]="rolUsuarios" responsiveLayout="scroll"
+            [globalFilterFields]="['nombre','descripcion']"
+            [rows]="5" [paginator]="true" [rowsPerPageOptions]="[5, 10, 15]"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+            [rowHover]="true" dataKey="usuarioId">
+  
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="userName">
+                      Usuario <p-sortIcon field="userName"></p-sortIcon>
+                  </th>
+                    <th>Opciones</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-user>
+                <tr>
+                    <td style="width: 80%; min-width: 10rem">
+                      <span class="p-column-title">Usuario</span>
+                      {{ user.userName }}
+                  </td>
+                    <td style="width: 20%; min-width: 10rem">
+                        <div class="flex">
+                            <button pButton pRipple icon="pi pi-minus-circle" title="Quitar usuario" class="p-button-rounded p-button-danger" (click)="quitarUsuario(user)"></button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+          </div>
+      </div>
+      </p-card>    
+  </p-tabPanel>
+
+  <p-tabPanel header="Permisos" class="line-height-3 m-0" leftIcon="pi pi-tags" tooltip="Permisos">
+    <p-card>
+      <p-tree [value]="componentesTree" selectionMode="checkbox" [(selection)]="componentesSeleccionados" [filter]="true"></p-tree>
+    </p-card>
+  </p-tabPanel>
+
+</p-tabView>
+
+<app-footer-dialog (guardarEvent)="guardarRegistro()" (cancelarEvent)="cerrarVentana()"></app-footer-dialog>

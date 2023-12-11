@@ -1,0 +1,22 @@
+:host {
+    .container {
+      padding: 3rem 1.5rem 2rem 1.5rem;
+    }
+    .footer {
+      border-top: 1px solid #e9ecef;
+    //   border-top: 0;
+      background: white;
+      padding: 1rem;
+      text-align: right;
+      border-bottom-right-radius: 2px;
+      border-bottom-left-radius: 2px;
+      display: flex;
+      justify-content: flex-end;
+      bottom: 0px !important;
+    }
+  
+    .footer button {
+      margin: 0 .5rem 0 0;
+      width: auto;
+    }
+  }

@@ -1,0 +1,45 @@
+<div class="card py-1 px-4 md:px-4 overflow-auto">
+  <div class="">
+
+    <div class="flex flex-column mt-5 md:mt-0">
+      <div class="flex flex-column">
+        <div class="flex  mb-2">
+          <span class="font-semibold mr-3"><p-tag severity="danger" value="Módulo:" [style]="{'font-size': '15px'}"></p-tag></span><span class="font-semibold">{{registro.modulo}}</span>
+        </div>
+        <div class="flex  mb-2">
+          <span class="font-semibold mr-3"><p-tag severity="danger" value="Entorno:" [style]="{'font-size': '15px'}"></p-tag></span><span class="font-semibold">{{registro.entorno}}</span>
+        </div>
+        <div class="flex  mb-2">
+          <span class="font-semibold mr-3"><p-tag severity="danger" value="Hresult:" [style]="{'font-size': '15px'}"></p-tag></span><span class="font-semibold">{{registro.hresult}}</span>
+        </div>
+        <div class="flex  mb-2">
+          <span class="font-semibold mr-3"><p-tag severity="danger" value="Fecha error:" [style]="{'font-size': '15px'}"></p-tag></span><span class="font-semibold">{{registro.creado | date:'dd/MM/yyy hh:mm:ss a'}}</span>
+        </div>
+        <div class="flex  mb-2">
+          <span class="font-semibold mr-3"><p-tag severity="danger" value="Información Adicional:" [style]="{'font-size': '15px'}"></p-tag></span><span class="font-semibold">{{registro.informacionAdicional}}</span>
+        </div>
+        <div class="flex  mb-2">
+          <span class="font-semibold mr-3"><p-tag severity="danger" value="Mensaje de error:" [style]="{'font-size': '15px'}"></p-tag></span>
+        </div>
+        <div class="flex  mb-2">
+          <span class="font-semibold mr-3">{{registro.message}}</span>
+        </div>
+
+        <div class="flex  mb-2">
+          <span class="font-semibold mr-3"><p-tag severity="danger" value="StackTrace:" [style]="{'font-size': '15px'}"></p-tag></span>
+        </div>
+        <div class="flex  mb-2">
+          <span class="font-semibold mr-3">{{registro.stackTrace}}</span>
+        </div>
+        <div class="flex  mb-2">
+          <span class="font-semibold mr-3"><p-tag severity="danger" value="ExceptionSource:" [style]="{'font-size': '15px'}"></p-tag></span><span class="font-semibold">{{registro.source}}</span>
+        </div>
+        <div class="flex  mb-2">
+          <span class="font-semibold mr-3"><p-tag severity="danger" value="TargetSite:" [style]="{'font-size': '15px'}"></p-tag></span><span class="font-semibold">{{registro.targetSite}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+  <app-footer-dialog (cancelarEvent)="cerrarVentana()" [showGuardar]="false"></app-footer-dialog>

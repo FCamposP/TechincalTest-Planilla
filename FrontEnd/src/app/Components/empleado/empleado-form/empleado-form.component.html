@@ -1,0 +1,55 @@
+<p-tabView>
+    <p-tabPanel header="Detalles de empleado" class="line-height-3 m-0" leftIcon="pi pi-bookmark-fill"
+        tooltip="Detalles de empleado">
+        <form [formGroup]="form" (ngSubmit)="onSubmit(form)" class="grid p-fluid">
+            <div class="field col-12 md:col-6">
+                <label htmlFor="puestoId">Puesto</label>
+                <p-dropdown [options]="listaPuestos" formControlName="puestoSelected" optionLabel="nombre"
+                    placeholder="Seleccionar puesto" id="puestoId"></p-dropdown>
+                <small class="ng-dirty ng-invalid"
+                    *ngIf="form.get('puestoSelected').invalid && (form.get('puestoSelected').dirty || form.get('puestoSelected').touched)">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="primerNombre">Primer Nombre</label>
+                <input pInputText id="primerNombre" formControlName="primerNombre" type="text"/>
+                <small class="ng-dirty ng-invalid" *ngIf="form.get('primerNombre').invalid && (form.get('primerNombre').dirty || form.get('primerNombre').touched)">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="segundoNombre">Segundo Nombre</label>
+                <input pInputText id="segundoNombre" formControlName="segundoNombre" type="text"/>
+                <small class="ng-dirty ng-invalid" *ngIf="form.get('segundoNombre').invalid && (form.get('segundoNombre').dirty || form.get('segundoNombre').touched)">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="primerApellido">Primer Apellido</label>
+                <input pInputText id="primerApellido" formControlName="primerApellido" type="text"/>
+                <small class="ng-dirty ng-invalid" *ngIf="form.get('primerApellido').invalid && (form.get('primerApellido').dirty || form.get('primerApellido').touched)">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="segundoApellido">Segundo Apellido</label>
+                <input pInputText id="segundoApellido" formControlName="segundoApellido" type="text"/>
+                <small class="ng-dirty ng-invalid" *ngIf="form.get('segundoApellido').invalid && (form.get('segundoApellido').dirty || form.get('segundoApellido').touched)">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="email">Email</label>
+                <input pInputText id="email" formControlName="email" type="text"/>
+                <small class="ng-dirty ng-invalid" *ngIf="form.get('email').invalid && (form.get('email').dirty || form.get('email').touched)">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="telefono">Teléfono</label>
+                <p-inputNumber inputId="telefono" formControlName="telefono" type="text" [useGrouping]="false"></p-inputNumber>
+                <small class="ng-dirty ng-invalid" *ngIf="form.get('telefono').invalid && (form.get('telefono').dirty || form.get('telefono').touched)">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="flex field col-12 justify-content-center gap-2">
+                <p-button label="Guardar" styleClass="p-button-success" type="submit" [disabled]="form.invalid"></p-button>
+                <p-button label="Cerrar" styleClass="p-button-danger" (click)="cerrarVentana()"></p-button>
+            </div>
+        </form>
+    </p-tabPanel>
+</p-tabView>

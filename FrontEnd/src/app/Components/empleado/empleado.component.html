@@ -1,0 +1,114 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button *ngIf="crear" pButton pRipple label="Nuevo" icon="pi pi-plus"
+                            class="p-button-success mr-2" (click)="crearNuevo()"></button>
+                        <button *ngIf="eliminar && registrosSeleccionados.length" pButton pRipple label="Borrar" icon="pi pi-trash"
+                            class="p-button-danger" (click)="eliminarMultiplesRegistros()"></button>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [(selection)]="registrosSeleccionados" selectionMode="multiple" [value]="listaRegistros"
+                responsiveLayout="scroll"
+                [globalFilterFields]="['nombrePuesto','primerNombre','segundoNombre', 'primerApellido', 'segundoApellido']"
+                [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10, 20, 30]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros" [rowHover]="true"
+                dataKey="empleadoId">
+                <ng-template pTemplate="caption">
+                    <div class="grid grid-nogutter md:flex-row justify-content-between">
+                        <div>
+                            <h5 class="m-0">Gestionar empleados</h5>
+                        </div>
+                        <div col-12 sm:col-3 md:col-6 lg:col-3>
+                        </div>
+                        <div col-12 sm:col-3 md:col-6 lg:col-3>
+
+                            <span class="p-input-icon-left mb-2 md:mb-0">
+                                <i class="pi pi-search"></i>
+                                <input type="search" pInputText placeholder="Buscar..."
+                                    (input)="dt.filterGlobal($event.target.value, 'contains')">
+                            </span>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="nombrePuesto">
+                            Puesto <p-sortIcon field="nombrePuesto"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="nombres">
+                            Nombres
+                            <p-sortIcon field="nombre"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="apellidos">
+                            Apellidos
+                            <p-sortIcon field="Descripcion"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="email">
+                            Email
+                            <p-sortIcon field="email"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="telefono">
+                            Teléfono
+                            <p-sortIcon field="telefono"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="creado">
+                            Creación
+                            <p-sortIcon field="creado"></p-sortIcon>
+                        </th>
+                        <th>Opciones</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-registro>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="registro"></p-tableCheckbox>
+                        </td>
+                        <td style="width: 10%; min-width: 10rem">
+                            <span class="p-column-title">Puesto</span>
+                            {{ registro.nombrePuesto }}
+                        </td>
+                        <td style="width: 20%; min-width: 10rem">
+                            <span class="p-column-title">Nombres</span>
+                            {{ registro.primerNombre }} {{registro.segundoNombre}}
+                        </td>
+                        <td style="width: 20%; min-width: 10rem">
+                            <span class="p-column-title">Apellidos</span>
+                            {{ registro.primerApellido }} {{registro.segundoApellido}}
+                        </td>
+                        <td style="width: 10%; min-width: 10rem">
+                            <span class="p-column-title">Email</span>
+                            {{ registro.email }}
+                        </td>
+                        <td style="width: 10%; min-width: 10rem">
+                            <span class="p-column-title">Teléfono</span>
+                            {{ registro.telefono }}
+                        </td>
+                        <td style="width: 20%; min-width: 10rem">
+                            <span class="p-column-title">creado</span>
+                            {{ registro.creado | date:'dd/MM/yyy hh:mm:ss a' }}
+                        </td>
+                        <td style="width: 10%; min-width: 10rem">
+                            <div class="flex">
+                                <button *ngIf="editar" pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-warning mr-2"
+                                    (click)="editarRegistro(registro.empleadoId)"></button>
+                                <button *ngIf="eliminar" pButton pRipple icon="pi pi-trash"
+                                    class="p-button-rounded p-button-danger"
+                                    (click)="eliminarRegistro(registro.empleadoId)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+
+<div class="login-container">
+    <div class="login-flex">
+        <div class="login-form">
+            <div class="login-icon">
+                <img src="assets/layout/images/defensoria.png" alt="avalon-ng"/>
+            </div>
+            <div class="login-header">
+                <h2>Bienvenido</h2>
+                <span>Ingresar al sistema</span>
+            </div>
+            <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+                <div class="login-group">
+                    <div class="input-container">
+                        <span class="pi pi-user"></span>
+                        <input type="text" pInputText id="username" formControlName="username" autofocus/>
+                    </div>
+                    <small class="login-error" *ngIf="form.get('username').invalid && (form.get('username').dirty || form.get('username').touched)">El usuario es requerido.</small>
+                </div>
+                <div class="login-group">
+                    <div class="input-container">
+                        <span class="pi pi-lock"></span>
+                        <input type="password" pPassword id="password" formControlName="password"/>
+                    </div>
+                    <small class="login-error" *ngIf="form.get('password').invalid && (form.get('password').dirty || form.get('password').touched)">La contraseña es requerida.</small>
+                </div>
+                <div class="login-button">
+                    <small class="login-fail" *ngIf="errorLogin">Usuario o contraseña incorrecta</small>
+                    <button  type="submit" [disabled]="form.invalid">Iniciar sesión</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

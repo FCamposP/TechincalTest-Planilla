@@ -1,0 +1,28 @@
+<p-tabView>
+    <p-tabPanel header="Detalles de periodo" class="line-height-3 m-0" leftIcon="pi pi-bookmark-fill"
+        tooltip="Detalles de periodo">
+        <form [formGroup]="form" (ngSubmit)="onSubmit(form)" class="grid p-fluid">
+            <div class="field col-12 md:col-6">
+                <label htmlFor="fechaInicio">Fecha Inicio</label>
+                <p-calendar [showIcon]="true" id="fechaInicio" inputId="icon" formControlName="fechaInicio" [(ngModel)]="fechaInicio"></p-calendar>
+                <small class="ng-dirty ng-invalid" *ngIf="form.get('fechaInicio').invalid && (form.get('fechaInicio').dirty || form.get('fechaInicio').touched)">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="fechaFin">Fecha Fin</label>
+                <p-calendar [showIcon]="true" id="fechaFin" formControlName="fechaFin"></p-calendar>
+                <small class="ng-dirty ng-invalid" *ngIf="form.get('fechaFin').invalid && (form.get('fechaFin').dirty || form.get('fechaFin').touched)">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="habilitado">Habilitado</label><br>
+                <p-inputSwitch id="habilitado" inputId="habilitado" formControlName="habilitado"></p-inputSwitch>
+              </div>
+              <br>
+            <div class="flex field col-12 justify-content-center gap-2">
+                <p-button label="Guardar" styleClass="p-button-success" type="submit" [disabled]="form.invalid"></p-button>
+                <p-button label="Cerrar" styleClass="p-button-danger" (click)="cerrarVentana()"></p-button>
+            </div>
+        </form>
+    </p-tabPanel>
+</p-tabView>

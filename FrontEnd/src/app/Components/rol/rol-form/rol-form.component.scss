@@ -1,0 +1,12 @@
+:host ::ng-deep .p-tree .p-tree-container .p-treenode .p-treenode-content.p-highlight {
+    background: #EFF6FF;
+    color: #1D4ED8;
+}
+
+:host ::ng-deep .p-tree .p-tree-container .p-treenode .p-treenode-content.p-highlight .p-treenode-icon {
+    color: #1D4ED8;
+}
+
+:host ::ng-deep .p-tree .p-tree-container .p-treenode .p-treenode-content.p-highlight .p-tree-toggler, .p-tree .p-tree-container .p-treenode .p-treenode-content.p-highlight .p-treenode-icon {
+    color: #1D4ED8;
+}

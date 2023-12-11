@@ -1,0 +1,55 @@
+<p-card>
+  <ng-template pTemplate="header">
+  </ng-template>
+  <div class="grid p-fluid">
+    <div class="field col-12 md:col-6">
+      <label htmlFor="tipoComponenteId">Tipo Componente</label>
+      <p-dropdown [options]="listaTipoComponenteDrop" [(ngModel)]="tipoComponenteElegido" placeholder="Seleccione un Tipo" optionLabel="name" [showClear]="true" autofocus></p-dropdown>
+    </div>
+    <div class="field col-12 md:col-6">
+      <label htmlFor="padreId">Componente Padre</label>
+      <p-dropdown [options]="listaOtrosComponentesDrop" [(ngModel)]="componentePadreElegido" placeholder="Eliga un padre" [filter]="true" optionLabel="name" [showClear]="true"></p-dropdown>
+    </div>
+
+    <div class="field col-12 md:col-6">
+      <label htmlFor="nombre">Nombre</label>
+      <input pInputText id="nombre" [(ngModel)]="registro.nombre" required type="text" 
+        [ngClass]="{'ng-invalid ng-dirty': submitted && !registro.nombre}" />
+      <small class="ng-dirty ng-invalid" *ngIf="submitted && !registro.nombre">Este campo es requerido.</small>
+    </div>
+    <div class="field col-12 md:col-6">
+      <label htmlFor="nombreMostrar">Nombre a mostrar</label>
+      <input pInputText id="nombreMostrar" [(ngModel)]="registro.nombreMostrar" required type="text" 
+        [ngClass]="{'ng-invalid ng-dirty': submitted && !registro.nombreMostrar}" />
+      <small class="ng-dirty ng-invalid" *ngIf="submitted && !registro.nombreMostrar">Este campo es requerido.</small>
+    </div>
+    <div class="field col-12 md:col-6">
+      <label htmlFor="descripcion">Descripción</label>
+      <input pInputText id="descripcion" [(ngModel)]="registro.descripcion" required type="text" 
+        [ngClass]="{'ng-invalid ng-dirty': submitted && !registro.descripcion}" />
+      <small class="ng-dirty ng-invalid" *ngIf="submitted && !registro.descripcion">Este campo es
+        requerido.</small>
+    </div>
+    <div class="field col-12 md:col-6">
+      <label htmlFor="url">Url</label>
+      <input pInputText id="url" [(ngModel)]="registro.url" required type="text" 
+        [ngClass]="{'ng-invalid ng-dirty': submitted && !registro.url}" />
+      <small class="ng-dirty ng-invalid" *ngIf="submitted && !registro.url">Este campo es
+        requerido.</small>
+    </div>
+    <div class="field col-12 md:col-6">
+      <label htmlFor="Icon">Icon</label>
+      <input pInputText id="Icon" [(ngModel)]="registro.icon" required type="text" 
+        [ngClass]="{'ng-invalid ng-dirty': submitted && !registro.icon}" />
+      <small class="ng-dirty ng-invalid" *ngIf="submitted && !registro.icon">Este campo es
+        requerido.</small>
+    </div>
+    <div class="field col-12 md:col-6">
+      <label htmlFor="esFrontOffice">Es de Front Office</label><br>
+			<p-inputSwitch id="esFrontOffice" [(ngModel)]="registro.esFrontOffice"></p-inputSwitch>
+      <small class="ng-dirty ng-invalid" *ngIf="submitted && !registro.esFrontOffice">Este campo es
+        requerido.</small>
+    </div>
+  </div>
+</p-card>
+<app-footer-dialog (guardarEvent)="guardarRegistro()" (cancelarEvent)="cerrarVentana()"></app-footer-dialog>
