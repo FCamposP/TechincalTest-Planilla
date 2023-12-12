@@ -6,7 +6,6 @@ export class ComponenteDTO {
     nombreMostrar: number;
     descripcion: string;
     url: string;
-    esFrontOffice: boolean;
     icon: string;
     activo: boolean;
     nombrePadre:string;

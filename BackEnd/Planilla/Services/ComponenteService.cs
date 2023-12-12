@@ -26,12 +26,12 @@ namespace Planilla.Services
             _mapper = mapper;
         }
 
-        public async Task<ResponseWrapperDTO<IList<ComponenteDTO>>> GetAllDTO(bool esFrontOf)
+        public async Task<ResponseWrapperDTO<IList<ComponenteDTO>>> GetAllDTO()
         {
             ResponseWrapperDTO<IList<ComponenteDTO>> response = new ResponseWrapperDTO<IList<ComponenteDTO>>();
             try
             {
-                var componentes = await _dBContext.Componente.Include(x => x.Padre).Include(x => x.TipoComponente).Where(x => x.EsFrontOffice == esFrontOf).OrderByDescending(x => x.Creado).ToListAsync();
+                var componentes = await _dBContext.Componente.Include(x => x.Padre).Include(x => x.TipoComponente).OrderByDescending(x => x.Creado).ToListAsync();
                 if (componentes != null)
                 {
                     response.Data = _mapper.Map<List<ComponenteDTO>>(componentes);

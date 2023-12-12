@@ -41,9 +41,9 @@ export class EmpleadoFormComponent implements OnInit {
     this.form = this.fb.group({
       puestoSelected: [new PuestoDTO(), Validators.required],
       primerNombre: ['', Validators.required],
-      segundoNombre: ['', Validators.required],
+      segundoNombre: ['', ],
       primerApellido: ['', Validators.required],
-      segundoApellido: ['', Validators.required],
+      segundoApellido: ['', ],
       email: ['', [Validators.required, Validators.email] ],
       telefono: ['', Validators.required],
     })

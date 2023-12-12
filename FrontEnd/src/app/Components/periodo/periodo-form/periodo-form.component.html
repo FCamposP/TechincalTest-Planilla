@@ -4,13 +4,13 @@
         <form [formGroup]="form" (ngSubmit)="onSubmit(form)" class="grid p-fluid">
             <div class="field col-12 md:col-6">
                 <label htmlFor="fechaInicio">Fecha Inicio</label>
-                <p-calendar [showIcon]="true" id="fechaInicio" inputId="icon" formControlName="fechaInicio" [(ngModel)]="fechaInicio"></p-calendar>
+                <p-calendar [showIcon]="true" id="fechaInicio" inputId="icon" formControlName="fechaInicio" [(ngModel)]="fechaInicio" (ngModelChange)="ValidarInicio()"></p-calendar>
                 <small class="ng-dirty ng-invalid" *ngIf="form.get('fechaInicio').invalid && (form.get('fechaInicio').dirty || form.get('fechaInicio').touched)">Este campo es
                     requerido.</small>
             </div>
             <div class="field col-12 md:col-6">
                 <label htmlFor="fechaFin">Fecha Fin</label>
-                <p-calendar [showIcon]="true" id="fechaFin" formControlName="fechaFin"></p-calendar>
+                <p-calendar [showIcon]="true" id="fechaFin" formControlName="fechaFin" [(ngModel)]="fechaFin" (ngModelChange)="ValidarFin()"></p-calendar>
                 <small class="ng-dirty ng-invalid" *ngIf="form.get('fechaFin').invalid && (form.get('fechaFin').dirty || form.get('fechaFin').touched)">Este campo es
                     requerido.</small>
             </div>

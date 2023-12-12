@@ -8,7 +8,6 @@ using Planilla.Services;
 using Planilla.Abstractions;
 using Planilla.DTO.Others;
 using Planilla.DTO.LogError;
-using Planilla.DataAccess;
 
 namespace Planilla.Controllers
 {

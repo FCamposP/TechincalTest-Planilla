@@ -122,6 +122,12 @@ import { MenuService } from "./app.menu.service";
 import { ErrorLogComponent } from "./Components/error-log/error-log.component";
 import { ErrorFormComponent } from "./Components/error-log/error-form/error-form.component";
 import { PeriodoFormComponent } from "./Components/periodo/periodo-form/periodo-form.component";
+import { TipoDatoComponent } from "./Components/tipo-dato/tipo-dato.component";
+import { TipoDatoFormComponent } from "./Components/tipo-dato/tipo-dato-form/tipo-dato-form.component";
+import { ColumnaExcelComponent } from "./Components/columna-excel/columna-excel.component";
+import { ColumnaExcelFormComponent } from "./Components/columna-excel/columna-excel-form/columna-excel-form.component";
+import { PlanillaPagosComponent } from "./Components/planilla-pagos/planilla-pagos.component";
+import { BoletaPagoComponent } from "./Components/boleta-pago/boleta-pago.component";
 
 FullCalendarModule.registerPlugins([
     dayGridPlugin,
@@ -246,9 +252,14 @@ FullCalendarModule.registerPlugins([
         TipoComponenteFormComponent,
         ConfiguracionGlobalComponent,
         ConfiguracionGlobalFormComponent,
-
+        TipoDatoComponent,
+        TipoDatoFormComponent,
         ErrorLogComponent,
-        ErrorFormComponent
+        ErrorFormComponent,
+        ColumnaExcelComponent,
+        ColumnaExcelFormComponent,
+        PlanillaPagosComponent,
+        BoletaPagoComponent
 
     ],
     entryComponents: [

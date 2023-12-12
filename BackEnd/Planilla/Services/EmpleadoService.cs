@@ -26,7 +26,7 @@ namespace Planilla.Services
             ResponseWrapperDTO<IList<EmpleadoDTO>> response = new ResponseWrapperDTO<IList<EmpleadoDTO>>();
             try
             {
-                var registros = await _dBContext.Empleado.OrderByDescending(x => x.Creado).ToListAsync();
+                var registros = await _dBContext.Empleado.Include(x=>x.Puesto).OrderByDescending(x => x.Creado).ToListAsync();
                 if (registros != null)
                 {
                     response.Data = _mapper.Map<List<EmpleadoDTO>>(registros);
@@ -36,6 +36,8 @@ namespace Planilla.Services
             {
                 response.Data = null;
                 response.AddResponseStatus(1, "Ocurrió un error, no se lograron obtener los registros.", ex.Message);
+                LogError excepcion = (LogError)ex;
+                excepcion.InformacionAdicional = exceptionHandler.InformacionAdicionalMetodo("EmpleadoService", "GetAllDTO");
                 exceptionHandler.SaveException(ex);
             }
             return response;

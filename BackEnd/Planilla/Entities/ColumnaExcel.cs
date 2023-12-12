@@ -9,15 +9,11 @@ namespace Planilla.Entities
 {
     public partial class ColumnaExcel
     {
-        public ColumnaExcel()
-        {
-            PlantillaColumnaExcel = new HashSet<PlantillaColumnaExcel>();
-        }
-
         public int ColumnaExcelId { get; set; }
         public int? TipoDatoId { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
+        public int? Orden { get; set; }
         public bool? Activo { get; set; }
         public int Creador { get; set; }
         public DateTime Creado { get; set; }
@@ -25,6 +21,5 @@ namespace Planilla.Entities
         public DateTime? Modificado { get; set; }
 
         public virtual TipoDato TipoDato { get; set; }
-        public virtual ICollection<PlantillaColumnaExcel> PlantillaColumnaExcel { get; set; }
     }
 }

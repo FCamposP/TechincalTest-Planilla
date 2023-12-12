@@ -23,14 +23,12 @@ export class ComponentesComponent implements OnInit, OnDestroy {
     textoHeaderDialogo = '';
     registrosSeleccionados: ComponenteDTO[];
     tipoComponentes: SelectItem[];
-    esFrontOffice: boolean = false;
-    componentesFiltrados: string = "Back Office"
 
     constructor(private sharedService: SharedService, private service: appServices<any>, public dialogService: DialogService) { }
 
     ngOnInit() {
         this.registrosSeleccionados = [];
-        this.ObtenerRegistros(this.esFrontOffice);
+        this.ObtenerRegistros();
         this.tipoComponentes = [
             { label: 'Front Office', value: true },
             { label: 'Back Office', value: false }
@@ -76,24 +74,22 @@ export class ComponentesComponent implements OnInit, OnDestroy {
 
         this.ref.onClose.subscribe((resultadoExitoso: boolean) => {
             if (resultadoExitoso) {
-                this.ObtenerRegistros(this.esFrontOffice);
+                this.ObtenerRegistros();
                 // this.messageService.add({severity:'info', summary: 'Car Selected', detail:'Vin:' + car.vin});
             }
         });
     }
 
-    ObtenerRegistros(esFrontOffice: boolean) {
+    ObtenerRegistros() {
         let queryParams = new HttpParams();
-        queryParams = queryParams.append("esFrontOffice", esFrontOffice);
-        this.service.OtroGet('componente', '', queryParams).subscribe((data: ComponenteDTO[]) => {
+        this.service.OtroGet('componente', '', null).subscribe((data: ComponenteDTO[]) => {
             this.listaRegistros = data;
         }
         );
     }
 
-    cambioComponentes(esFrontOffice) {
-        this.esFrontOffice = esFrontOffice;
-        this.ObtenerRegistros(this.esFrontOffice);
+    cambioComponentes() {
+        this.ObtenerRegistros();
     }
 
 
@@ -114,7 +110,7 @@ export class ComponentesComponent implements OnInit, OnDestroy {
                 this.service.OtroDelete('componente', '', queryParams).subscribe((data: ComponenteDTO) => {
                     if (data != null) {
                         Swal.fire({ position: 'top-end', icon: 'success', text: 'Registro eliminado con éxito', showConfirmButton: false, timer: 3500, toast: true });
-                        this.ObtenerRegistros(this.esFrontOffice);
+                        this.ObtenerRegistros();
                     }
                 }
                 );
@@ -142,7 +138,7 @@ export class ComponentesComponent implements OnInit, OnDestroy {
                     this.service.OtroPost('componente', 'EliminarMultiples', listaIds).subscribe((data: ComponenteDTO) => {
                         if (data != null) {
                             Swal.fire({ position: 'top-end', icon: 'success', text: 'Registro eliminado con éxito', showConfirmButton: false, timer: 3500, toast: true });
-                            this.ObtenerRegistros(this.esFrontOffice);
+                            this.ObtenerRegistros();
                         }
                     }
                     );

@@ -66,7 +66,7 @@ namespace Planilla.DTO.Componente
         /// <summary>
         /// Nombre del tipo de componenten
         /// </summary>
-        public string? TipoComponente { get; set; }
+        public string? NombreTipoComponente { get; set; }
 
         /// <summary>
         /// Id de usuario creador del registro

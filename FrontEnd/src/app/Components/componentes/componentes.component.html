@@ -7,8 +7,7 @@
                   <div class="my-2">
                       <button *ngIf="crear" pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2" (click)="crearNuevo()"></button>
                       <button *ngIf="eliminar && registrosSeleccionados.length" pButton pRipple label="Borrar" icon="pi pi-trash" class="p-button-danger mr-2" (click)="eliminarMultiplesRegistros()"></button>
-                      <p-dropdown [options]="tipoComponentes" [(ngModel)]="sortKey" placeholder="{{componentesFiltrados}}"
-                      (onChange)="cambioComponentes($event.value.value)" optionLabel="label"></p-dropdown>
+
                   </div>
               </ng-template>
           </p-toolbar>

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ErrorLogDTO } from 'src/app/DTO/ErrorLogDTO';
+import { LogErrorDTO } from 'src/app/DTO/LogErrorDTO';
 import { appServices } from 'src/app/Services/appServices';
 import { SharedService } from 'src/app/Services/sharedService';
 import { ErrorFormComponent } from './error-form/error-form.component';
@@ -18,10 +18,10 @@ export class ErrorLogComponent implements OnInit, OnDestroy {
 
   ref: DynamicDialogRef;
 
-  listaRegistros: ErrorLogDTO[];
+  listaRegistros: LogErrorDTO[];
   textoHeaderDialogo = 'Detalle de Error';
-  registrosSeleccionados: ErrorLogDTO[];
-  registro: PeriodoDTO;
+  registrosSeleccionados: LogErrorDTO[];
+  registro: LogErrorDTO;
   fechaInicio: Date= new Date();
   fechaFin: Date= new Date();
 
@@ -68,7 +68,7 @@ export class ErrorLogComponent implements OnInit, OnDestroy {
     let queryParams = new HttpParams();
     queryParams = queryParams.append("fechaInicio", this.fechaInicio.toISOString());
     queryParams = queryParams.append("fechaFin", this.fechaFin.toISOString());
-      this.service.OtroGet('errorlog', 'ObtenerErroresPorFechas', queryParams).subscribe((data: ErrorLogDTO[]) => {
+      this.service.OtroGet('logerror', 'ObtenerErroresPorFechas', queryParams).subscribe((data: LogErrorDTO[]) => {
           this.listaRegistros = data;
       }
       );

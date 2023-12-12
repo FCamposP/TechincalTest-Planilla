@@ -29,7 +29,7 @@
         responsiveLayout="scroll" [globalFilterFields]="['modulo','informacionAdicional', 'creado']" [rows]="10" [paginator]="true"
         [rowsPerPageOptions]="[10, 20, 30]" [showCurrentPageReport]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros" [rowHover]="true"
-        dataKey="municipioId">
+        dataKey="logErrorId">
         <ng-template pTemplate="caption">
           <div class="grid grid-nogutter md:flex-row justify-content-between">
             <div>
@@ -56,7 +56,7 @@
               Módulo <p-sortIcon field="modulo"></p-sortIcon>
             </th>
             <th pSortableColumn="informacionAdicional">
-              Información Adicional
+              Mensaje Error
               <p-sortIcon field="informacionAdicional"></p-sortIcon>
             </th>
             <th pSortableColumn="creado">
@@ -76,8 +76,8 @@
               {{ registro.modulo }}
             </td>
             <td style="width: 35%; min-width: 10rem">
-              <span class="p-column-title">Información Adicional</span>
-              {{ registro.informacionAdicional }}
+              <span class="p-column-title">Mensaje Error</span>
+              {{ registro.message }}
             </td>
 
             <td style="width: 20%; min-width: 10rem">
@@ -87,7 +87,7 @@
             <td style="width: 10%; min-width: 10rem">
               <div class="flex">
                 <button pButton pRipple icon="pi pi-eye"
-                  class="p-button-rounded p-button-danger mr-2" (click)="mostrarDetalle(registro.errorLogId)"></button>
+                  class="p-button-rounded p-button-danger mr-2" (click)="mostrarDetalle(registro.logErrorId)"></button>
               </div>
             </td>
           </tr>

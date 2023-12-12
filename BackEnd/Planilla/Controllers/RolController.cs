@@ -57,9 +57,9 @@ namespace Planilla.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<ResponseWrapperDTO<List<RolTree>>> GetRolPermisoTree(bool esFrontOffice)
+        public async Task<ResponseWrapperDTO<List<RolTree>>> GetRolPermisoTree()
         {
-            return await _rolService.GetComponentesTree(esFrontOffice);
+            return await _rolService.GetComponentesTree();
         }
 
         [HttpGet]

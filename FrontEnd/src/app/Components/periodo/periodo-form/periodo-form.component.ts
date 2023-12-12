@@ -34,7 +34,8 @@ export class PeriodoFormComponent implements OnInit{
     this.esNuevo = this.config.data.esNuevo;
     this.registroId = this.config.data.registroId;
 
-    // this.fechaFin= new Date();
+     this.fechaFin= new Date();
+     this.fechaInicio= this.fechaFin;
 
     if(!this.esNuevo){
       this.obtenerDetalleRegistro();
@@ -50,7 +51,6 @@ export class PeriodoFormComponent implements OnInit{
   onSubmit(form: FormGroup){
     this.registro = {
       ...this.registro,
-      tipoPeriodoId: form.value.tipoPeriodoSelected.tipoPeriodoId,
       fechaInicio: form.value.fechaInicio,
       fechaFin: form.value.fechaFin,
       habilitado: form.value.habilitado
@@ -131,5 +131,19 @@ export class PeriodoFormComponent implements OnInit{
     Swal.fire({ position: 'top-end', icon: icon, text: texto, showConfirmButton: false, timer: 3500, toast: true });
 
   }
+
+  ValidarInicio(){
+    if(this.fechaInicio>this.fechaFin){
+      this.fechaFin=this.fechaInicio;
+      }
+    }
+  
+
+  ValidarFin(){
+    if(this.fechaFin<this.fechaInicio){
+      this.fechaInicio=this.fechaFin;
+      }
+    }
+  
 
 }

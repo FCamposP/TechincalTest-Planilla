@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YLhtOu5RJDEarel9GM0gyQsFeL7wZy4SLTqKP7Mo9X7fSaUu0UE5kwFZqwA2N5mr9YubNltw/YtzyedZFvB+Ag==",
+  "dgSpecHash": "im3qwaYzYdCoQlGf1iNVOPZS2CxkW5z/+RhBWqDYq8aSXaczVmmC844Rj7vD3mcaVCrxGWlpT0S8sHlL3dMbTQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\fabry\\source\\repos\\TechnicalTest\\BackEnd\\Planilla\\Planilla.csproj",
+  "projectFilePath": "C:\\Users\\fabry\\source\\repos\\TechnicalTest\\Repo\\BackEnd\\Planilla\\Planilla.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fabry\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\fabry\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

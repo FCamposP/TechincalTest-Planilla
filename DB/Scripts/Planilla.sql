@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2016                    */
-/* Created on:     12/11/2023 12:27:40 AM                       */
+/* Created on:     12/12/2023 3:37:23 PM                        */
 /*==============================================================*/
 
 
@@ -48,6 +48,13 @@ go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('EncabezadoPlanilla') and o.name = 'FK_ENCABEZA_REFERENCE_ESTADOPL')
+alter table EncabezadoPlanilla
+   drop constraint FK_ENCABEZA_REFERENCE_ESTADOPL
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
    where r.fkeyid = object_id('Notificacion') and o.name = 'FK_NOTIFICA_REFERENCE_USUARIO')
 alter table Notificacion
    drop constraint FK_NOTIFICA_REFERENCE_USUARIO
@@ -58,20 +65,6 @@ if exists (select 1
    where r.fkeyid = object_id('Notificacion') and o.name = 'FK_NOTIFICA_REFERENCE_TIPONOTI')
 alter table Notificacion
    drop constraint FK_NOTIFICA_REFERENCE_TIPONOTI
-go
-
-if exists (select 1
-   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('PlantillaColumnaExcel') and o.name = 'FK_PLANTILL_REFERENCE_COLUMNAE')
-alter table PlantillaColumnaExcel
-   drop constraint FK_PLANTILL_REFERENCE_COLUMNAE
-go
-
-if exists (select 1
-   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('PlantillaColumnaExcel') and o.name = 'FK_PLANTILL_REFERENCE_PLANTILL')
-alter table PlantillaColumnaExcel
-   drop constraint FK_PLANTILL_REFERENCE_PLANTILL
 go
 
 if exists (select 1
@@ -153,6 +146,13 @@ go
 
 if exists (select 1
             from  sysobjects
+           where  id = object_id('EstadoPlanilla')
+            and   type = 'U')
+   drop table EstadoPlanilla
+go
+
+if exists (select 1
+            from  sysobjects
            where  id = object_id('LogError')
             and   type = 'U')
    drop table LogError
@@ -177,20 +177,6 @@ if exists (select 1
            where  id = object_id('Periodo')
             and   type = 'U')
    drop table Periodo
-go
-
-if exists (select 1
-            from  sysobjects
-           where  id = object_id('PlantillaColumnaExcel')
-            and   type = 'U')
-   drop table PlantillaColumnaExcel
-go
-
-if exists (select 1
-            from  sysobjects
-           where  id = object_id('PlantillaExcel')
-            and   type = 'U')
-   drop table PlantillaExcel
 go
 
 if exists (select 1
@@ -257,6 +243,7 @@ create table ColumnaExcel (
    TipoDatoId           int                  null,
    Nombre               varchar(256)         not null,
    Descripcion          text                 null,
+   Orden                int                  null,
    Activo               bit                  not null default 1,
    Creador              int                  not null default 1,
    Creado               datetime             not null default getdate(),
@@ -466,7 +453,6 @@ create table Componente (
    Descripcion          text                 null,
    Orden                int                  null,
    Url                  varchar(256)         null,
-   EsFrontOffice        bit                  null default 0,
    Icon                 varchar(256)         null,
    Activo               bit                  not null default 1,
    Creador              int                  not null default 1,
@@ -644,25 +630,6 @@ select @CurrentUser = user_name()
 execute sp_addextendedproperty 'MS_Description', 
    'Ruta de endpoint si fuese requerido por el componente',
    'schema', @CurrentUser, 'table', 'Componente', 'column', 'Url'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('Componente')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'EsFrontOffice')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'Componente', 'column', 'EsFrontOffice'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Indica si un componente pertenece a FrontOffice o BackOffice',
-   'schema', @CurrentUser, 'table', 'Componente', 'column', 'EsFrontOffice'
 go
 
 if exists(select 1 from sys.extended_properties p where
@@ -1297,8 +1264,10 @@ go
 create table EncabezadoPlanilla (
    EncabezadoPlanillaId int                  identity,
    PeriodoId            int                  null,
+   EstadoPlanillaId     int                  null,
    Descripcion          varchar(500)         not null,
-   Aprobado             bit                  null default 0,
+   EnviarCorreo         bit                  null default 0,
+   CorreoEnviado        bit                  null default 0,
    Activo               bit                  null default 1,
    Creador              int                  not null default 1,
    Creado               datetime             not null default GETDATE(),
@@ -1325,6 +1294,23 @@ select @CurrentUser = user_name()
 execute sp_addextendedproperty 'MS_Description', 
    'Identificador del periodo',
    'schema', @CurrentUser, 'table', 'EncabezadoPlanilla', 'column', 'PeriodoId'
+go
+
+/*==============================================================*/
+/* Table: EstadoPlanilla                                        */
+/*==============================================================*/
+create table EstadoPlanilla (
+   EstadoPlanillaId     int                  identity,
+   Codigo               varchar(10)          not null,
+   Nombre               varchar(250)         not null,
+   Descripcion          varchar(500)         null,
+   Activo               bit                  not null default 1,
+   Creador              int                  not null default 1,
+   Creado               datetime             null default getdate(),
+   Modificador          int                  null,
+   Modificado           datetime             null,
+   constraint PK_ESTADOPLANILLA primary key (EstadoPlanillaId)
+)
 go
 
 /*==============================================================*/
@@ -2078,376 +2064,6 @@ select @CurrentUser = user_name()
 execute sp_addextendedproperty 'MS_Description', 
    'Fecha y hora de ultima modificacion del registro',
    'schema', @CurrentUser, 'table', 'Periodo', 'column', 'Modificado'
-go
-
-/*==============================================================*/
-/* Table: PlantillaColumnaExcel                                 */
-/*==============================================================*/
-create table PlantillaColumnaExcel (
-   PlantillaColumnaExcelId int                  identity,
-   ColumnaExcelId       int                  null,
-   PlantillaExcelId     int                  null,
-   Posicion             int                  null,
-   Activo               bit                  not null default 1,
-   Creador              int                  not null default 1,
-   Creado               datetime             not null default getdate(),
-   Modificador          int                  null,
-   Modificado           datetime             null,
-   constraint PK_PLANTILLACOLUMNAEXCEL primary key (PlantillaColumnaExcelId)
-)
-go
-
-if exists (select 1 from  sys.extended_properties
-           where major_id = object_id('PlantillaColumnaExcel') and minor_id = 0)
-begin 
-   declare @CurrentUser sysname 
-select @CurrentUser = user_name() 
-execute sp_dropextendedproperty 'MS_Description',  
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel' 
- 
-end 
-
-
-select @CurrentUser = user_name() 
-execute sp_addextendedproperty 'MS_Description',  
-   'Conjunto de Características de una plantilla de Quien es Quien', 
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PlantillaColumnaExcel')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'PlantillaColumnaExcelId')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'PlantillaColumnaExcelId'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Identificador de la relación plantilla y caracteristica',
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'PlantillaColumnaExcelId'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PlantillaColumnaExcel')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'ColumnaExcelId')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'ColumnaExcelId'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Identificador de caracteristica',
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'ColumnaExcelId'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PlantillaColumnaExcel')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'PlantillaExcelId')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'PlantillaExcelId'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Identificador de Plantilla y Producto',
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'PlantillaExcelId'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PlantillaColumnaExcel')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'Posicion')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'Posicion'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Indica la posición a mostrar de la caracteristica en la plantilla y en los QEQ',
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'Posicion'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PlantillaColumnaExcel')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'Activo')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'Activo'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Indica si un registro esta activo en el sistema',
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'Activo'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PlantillaColumnaExcel')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'Creador')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'Creador'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Id de usuario creador del registro',
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'Creador'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PlantillaColumnaExcel')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'Creado')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'Creado'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Fecha y hora de creacion del registro',
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'Creado'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PlantillaColumnaExcel')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'Modificador')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'Modificador'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Id del usuario que realizo la última modificacion del registro',
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'Modificador'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PlantillaColumnaExcel')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'Modificado')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'Modificado'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Fecha y hora de ultima modificacion del registro',
-   'schema', @CurrentUser, 'table', 'PlantillaColumnaExcel', 'column', 'Modificado'
-go
-
-/*==============================================================*/
-/* Table: PlantillaExcel                                        */
-/*==============================================================*/
-create table PlantillaExcel (
-   PlantillaExcelId     int                  identity,
-   Nombre               varchar(256)         not null,
-   Activo               bit                  not null default 1,
-   Creador              int                  not null default 1,
-   Creado               datetime             not null default getdate(),
-   Modificador          int                  null,
-   Modificado           datetime             null,
-   constraint PK_PLANTILLAEXCEL primary key (PlantillaExcelId)
-)
-go
-
-if exists (select 1 from  sys.extended_properties
-           where major_id = object_id('PlantillaExcel') and minor_id = 0)
-begin 
-   declare @CurrentUser sysname 
-select @CurrentUser = user_name() 
-execute sp_dropextendedproperty 'MS_Description',  
-   'schema', @CurrentUser, 'table', 'PlantillaExcel' 
- 
-end 
-
-
-select @CurrentUser = user_name() 
-execute sp_addextendedproperty 'MS_Description',  
-   'Indica el encabezado de plantillas a utilizar para predificar las caracteristicas a crear en un Quien es Quien.', 
-   'schema', @CurrentUser, 'table', 'PlantillaExcel'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PlantillaExcel')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'PlantillaExcelId')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'PlantillaExcel', 'column', 'PlantillaExcelId'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Identificador de Plantilla y Producto',
-   'schema', @CurrentUser, 'table', 'PlantillaExcel', 'column', 'PlantillaExcelId'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PlantillaExcel')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'Nombre')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'PlantillaExcel', 'column', 'Nombre'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Nombre del registro',
-   'schema', @CurrentUser, 'table', 'PlantillaExcel', 'column', 'Nombre'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PlantillaExcel')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'Activo')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'PlantillaExcel', 'column', 'Activo'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Indica si un registro esta activo en el sistema',
-   'schema', @CurrentUser, 'table', 'PlantillaExcel', 'column', 'Activo'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PlantillaExcel')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'Creador')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'PlantillaExcel', 'column', 'Creador'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Id de usuario creador del registro',
-   'schema', @CurrentUser, 'table', 'PlantillaExcel', 'column', 'Creador'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PlantillaExcel')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'Creado')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'PlantillaExcel', 'column', 'Creado'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Fecha y hora de creacion del registro',
-   'schema', @CurrentUser, 'table', 'PlantillaExcel', 'column', 'Creado'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PlantillaExcel')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'Modificador')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'PlantillaExcel', 'column', 'Modificador'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Id del usuario que realizo la última modificacion del registro',
-   'schema', @CurrentUser, 'table', 'PlantillaExcel', 'column', 'Modificador'
-go
-
-if exists(select 1 from sys.extended_properties p where
-      p.major_id = object_id('PlantillaExcel')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'Modificado')
-)
-begin
-   declare @CurrentUser sysname
-select @CurrentUser = user_name()
-execute sp_dropextendedproperty 'MS_Description', 
-   'schema', @CurrentUser, 'table', 'PlantillaExcel', 'column', 'Modificado'
-
-end
-
-
-select @CurrentUser = user_name()
-execute sp_addextendedproperty 'MS_Description', 
-   'Fecha y hora de ultima modificacion del registro',
-   'schema', @CurrentUser, 'table', 'PlantillaExcel', 'column', 'Modificado'
 go
 
 /*==============================================================*/
@@ -3912,6 +3528,11 @@ alter table EncabezadoPlanilla
       references Periodo (PeriodoId)
 go
 
+alter table EncabezadoPlanilla
+   add constraint FK_ENCABEZA_REFERENCE_ESTADOPL foreign key (EstadoPlanillaId)
+      references EstadoPlanilla (EstadoPlanillaId)
+go
+
 alter table Notificacion
    add constraint FK_NOTIFICA_REFERENCE_USUARIO foreign key (UsuarioId)
       references Usuario (UsuarioId)
@@ -3920,16 +3541,6 @@ go
 alter table Notificacion
    add constraint FK_NOTIFICA_REFERENCE_TIPONOTI foreign key (TipoNotificacionId)
       references TipoNotificacion (TipoNotificacionId)
-go
-
-alter table PlantillaColumnaExcel
-   add constraint FK_PLANTILL_REFERENCE_COLUMNAE foreign key (ColumnaExcelId)
-      references ColumnaExcel (ColumnaExcelId)
-go
-
-alter table PlantillaColumnaExcel
-   add constraint FK_PLANTILL_REFERENCE_PLANTILL foreign key (PlantillaExcelId)
-      references PlantillaExcel (PlantillaExcelId)
 go
 
 alter table RolPermiso

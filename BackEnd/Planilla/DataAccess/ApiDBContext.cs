@@ -30,18 +30,19 @@ namespace Planilla.DataAccess
                 optionsBuilder.UseSqlServer(this._configuration.GetConnectionString("SqlServerQEQDB"));
             }
         }
+
+
         public virtual DbSet<ColumnaExcel> ColumnaExcel { get; set; }
         public virtual DbSet<Componente> Componente { get; set; }
         public virtual DbSet<ConfiguracionGlobal> ConfiguracionGlobal { get; set; }
         public virtual DbSet<DetallePlanilla> DetallePlanilla { get; set; }
         public virtual DbSet<Empleado> Empleado { get; set; }
         public virtual DbSet<EncabezadoPlanilla> EncabezadoPlanilla { get; set; }
+        public virtual DbSet<EstadoPlanilla> EstadoPlanilla { get; set; }
         public virtual DbSet<LogError> LogError { get; set; }
         public virtual DbSet<LogEvento> LogEvento { get; set; }
         public virtual DbSet<Notificacion> Notificacion { get; set; }
         public virtual DbSet<Periodo> Periodo { get; set; }
-        public virtual DbSet<PlantillaColumnaExcel> PlantillaColumnaExcel { get; set; }
-        public virtual DbSet<PlantillaExcel> PlantillaExcel { get; set; }
         public virtual DbSet<Puesto> Puesto { get; set; }
         public virtual DbSet<Rol> Rol { get; set; }
         public virtual DbSet<RolPermiso> RolPermiso { get; set; }
@@ -137,10 +138,6 @@ namespace Planilla.DataAccess
                 entity.Property(e => e.Descripcion)
                     .HasColumnType("text")
                     .HasComment("Descripcion del registro");
-
-                entity.Property(e => e.EsFrontOffice)
-                    .HasDefaultValueSql("((0))")
-                    .HasComment("Indica si un componente pertenece a FrontOffice o BackOffice");
 
                 entity.Property(e => e.Icon)
                     .HasMaxLength(256)
@@ -337,7 +334,7 @@ namespace Planilla.DataAccess
             {
                 entity.Property(e => e.Activo).HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.Aprobado).HasDefaultValueSql("((0))");
+                entity.Property(e => e.CorreoEnviado).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Creado)
                     .HasColumnType("datetime")
@@ -350,14 +347,50 @@ namespace Planilla.DataAccess
                     .HasMaxLength(500)
                     .IsUnicode(false);
 
+                entity.Property(e => e.EnviarCorreo).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.Modificado).HasColumnType("datetime");
 
                 entity.Property(e => e.PeriodoId).HasComment("Identificador del periodo");
+
+                entity.HasOne(d => d.EstadoPlanilla)
+                    .WithMany(p => p.EncabezadoPlanilla)
+                    .HasForeignKey(d => d.EstadoPlanillaId)
+                    .HasConstraintName("FK_ENCABEZA_REFERENCE_ESTADOPL");
 
                 entity.HasOne(d => d.Periodo)
                     .WithMany(p => p.EncabezadoPlanilla)
                     .HasForeignKey(d => d.PeriodoId)
                     .HasConstraintName("FK_ENCABEZA_REFERENCE_PERIODO");
+            });
+
+            modelBuilder.Entity<EstadoPlanilla>(entity =>
+            {
+                entity.Property(e => e.Activo)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Codigo)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Creado)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Creador).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Descripcion)
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Modificado).HasColumnType("datetime");
+
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<LogError>(entity =>
@@ -538,82 +571,6 @@ namespace Planilla.DataAccess
                     .HasComment("Fecha y hora de ultima modificacion del registro");
 
                 entity.Property(e => e.Modificador).HasComment("Id del usuario que realizo la última modificacion del registro");
-            });
-
-            modelBuilder.Entity<PlantillaColumnaExcel>(entity =>
-            {
-                entity.HasComment("Conjunto de Características de una plantilla de Quien es Quien");
-
-                entity.Property(e => e.PlantillaColumnaExcelId).HasComment("Identificador de la relación plantilla y caracteristica");
-
-                entity.Property(e => e.Activo)
-                    .IsRequired()
-                    .HasDefaultValueSql("((1))")
-                    .HasComment("Indica si un registro esta activo en el sistema");
-
-                entity.Property(e => e.ColumnaExcelId).HasComment("Identificador de caracteristica");
-
-                entity.Property(e => e.Creado)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())")
-                    .HasComment("Fecha y hora de creacion del registro");
-
-                entity.Property(e => e.Creador)
-                    .HasDefaultValueSql("((1))")
-                    .HasComment("Id de usuario creador del registro");
-
-                entity.Property(e => e.Modificado)
-                    .HasColumnType("datetime")
-                    .HasComment("Fecha y hora de ultima modificacion del registro");
-
-                entity.Property(e => e.Modificador).HasComment("Id del usuario que realizo la última modificacion del registro");
-
-                entity.Property(e => e.PlantillaExcelId).HasComment("Identificador de Plantilla y Producto");
-
-                entity.Property(e => e.Posicion).HasComment("Indica la posición a mostrar de la caracteristica en la plantilla y en los QEQ");
-
-                entity.HasOne(d => d.ColumnaExcel)
-                    .WithMany(p => p.PlantillaColumnaExcel)
-                    .HasForeignKey(d => d.ColumnaExcelId)
-                    .HasConstraintName("FK_PLANTILL_REFERENCE_COLUMNAE");
-
-                entity.HasOne(d => d.PlantillaExcel)
-                    .WithMany(p => p.PlantillaColumnaExcel)
-                    .HasForeignKey(d => d.PlantillaExcelId)
-                    .HasConstraintName("FK_PLANTILL_REFERENCE_PLANTILL");
-            });
-
-            modelBuilder.Entity<PlantillaExcel>(entity =>
-            {
-                entity.HasComment("Indica el encabezado de plantillas a utilizar para predificar las caracteristicas a crear en un Quien es Quien.");
-
-                entity.Property(e => e.PlantillaExcelId).HasComment("Identificador de Plantilla y Producto");
-
-                entity.Property(e => e.Activo)
-                    .IsRequired()
-                    .HasDefaultValueSql("((1))")
-                    .HasComment("Indica si un registro esta activo en el sistema");
-
-                entity.Property(e => e.Creado)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())")
-                    .HasComment("Fecha y hora de creacion del registro");
-
-                entity.Property(e => e.Creador)
-                    .HasDefaultValueSql("((1))")
-                    .HasComment("Id de usuario creador del registro");
-
-                entity.Property(e => e.Modificado)
-                    .HasColumnType("datetime")
-                    .HasComment("Fecha y hora de ultima modificacion del registro");
-
-                entity.Property(e => e.Modificador).HasComment("Id del usuario que realizo la última modificacion del registro");
-
-                entity.Property(e => e.Nombre)
-                    .IsRequired()
-                    .HasMaxLength(256)
-                    .IsUnicode(false)
-                    .HasComment("Nombre del registro");
             });
 
             modelBuilder.Entity<Puesto>(entity =>

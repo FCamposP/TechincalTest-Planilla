@@ -7,21 +7,23 @@ using System.Collections.Generic;
 
 namespace Planilla.Entities
 {
-    public partial class PlantillaExcel
+    public partial class EstadoPlanilla
     {
-        public PlantillaExcel()
+        public EstadoPlanilla()
         {
-            PlantillaColumnaExcel = new HashSet<PlantillaColumnaExcel>();
+            EncabezadoPlanilla = new HashSet<EncabezadoPlanilla>();
         }
 
-        public int PlantillaExcelId { get; set; }
+        public int EstadoPlanillaId { get; set; }
+        public string Codigo { get; set; }
         public string Nombre { get; set; }
+        public string Descripcion { get; set; }
         public bool? Activo { get; set; }
         public int Creador { get; set; }
-        public DateTime Creado { get; set; }
+        public DateTime? Creado { get; set; }
         public int? Modificador { get; set; }
         public DateTime? Modificado { get; set; }
 
-        public virtual ICollection<PlantillaColumnaExcel> PlantillaColumnaExcel { get; set; }
+        public virtual ICollection<EncabezadoPlanilla> EncabezadoPlanilla { get; set; }
     }
 }

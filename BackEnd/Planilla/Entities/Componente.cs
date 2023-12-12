@@ -23,7 +23,6 @@ namespace Planilla.Entities
         public string Descripcion { get; set; }
         public int? Orden { get; set; }
         public string Url { get; set; }
-        public bool? EsFrontOffice { get; set; }
         public string Icon { get; set; }
         public bool? Activo { get; set; }
         public int Creador { get; set; }

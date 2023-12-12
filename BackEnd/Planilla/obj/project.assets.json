@@ -9054,11 +9054,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\fabry\\source\\repos\\TechnicalTest\\BackEnd\\Planilla\\Planilla.csproj",
+      "projectUniqueName": "C:\\Users\\fabry\\source\\repos\\TechnicalTest\\Repo\\BackEnd\\Planilla\\Planilla.csproj",
       "projectName": "Planilla",
-      "projectPath": "C:\\Users\\fabry\\source\\repos\\TechnicalTest\\BackEnd\\Planilla\\Planilla.csproj",
+      "projectPath": "C:\\Users\\fabry\\source\\repos\\TechnicalTest\\Repo\\BackEnd\\Planilla\\Planilla.csproj",
       "packagesPath": "C:\\Users\\fabry\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\fabry\\source\\repos\\TechnicalTest\\BackEnd\\Planilla\\obj\\",
+      "outputPath": "C:\\Users\\fabry\\source\\repos\\TechnicalTest\\Repo\\BackEnd\\Planilla\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

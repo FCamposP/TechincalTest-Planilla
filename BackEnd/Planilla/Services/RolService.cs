@@ -276,13 +276,13 @@ namespace Planilla.Services
             return response;
         }
 
-        public async Task<ResponseWrapperDTO<List<RolTree>>> GetComponentesTree(bool esFrontOffice)
+        public async Task<ResponseWrapperDTO<List<RolTree>>> GetComponentesTree()
         {
             ResponseWrapperDTO<List<RolTree>> response = new ResponseWrapperDTO<List<RolTree>>() { Data = new List<RolTree>() };
             try
             {
                 List<RolTree> nodos = new List<RolTree>();
-                var responseComponentes = await _componenteService.GetAllDTO(esFrontOffice);
+                var responseComponentes = await _componenteService.GetAllDTO();
                 if (responseComponentes.Data != null)
                 {
                     foreach (var item in responseComponentes.Data)

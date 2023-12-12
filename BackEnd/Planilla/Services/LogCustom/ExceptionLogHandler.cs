@@ -28,11 +28,6 @@ namespace Planilla.Services.LogCustom
         {
             LogErrorsService.Logger = new DBLogErrorger(_dbContext, _appSettingsModule);
             LogErrorsService.RegisterException(ex);
-            //if (!LogErrorsService.RegisterException(ex))
-            //{
-            //    LogErrorsService.Logger = new FileLogErrorger();
-            //    LogErrorsService.RegisterException(ex);
-            //}
         }
 
         public string InformacionAdicionalMetodo(string archivo, string metodo, string adicional = "")

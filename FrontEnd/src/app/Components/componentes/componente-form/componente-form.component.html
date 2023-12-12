@@ -44,12 +44,6 @@
       <small class="ng-dirty ng-invalid" *ngIf="submitted && !registro.icon">Este campo es
         requerido.</small>
     </div>
-    <div class="field col-12 md:col-6">
-      <label htmlFor="esFrontOffice">Es de Front Office</label><br>
-			<p-inputSwitch id="esFrontOffice" [(ngModel)]="registro.esFrontOffice"></p-inputSwitch>
-      <small class="ng-dirty ng-invalid" *ngIf="submitted && !registro.esFrontOffice">Este campo es
-        requerido.</small>
-    </div>
   </div>
 </p-card>
 <app-footer-dialog (guardarEvent)="guardarRegistro()" (cancelarEvent)="cerrarVentana()"></app-footer-dialog>

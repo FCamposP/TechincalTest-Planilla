@@ -88,7 +88,7 @@ namespace Planilla.Services
                 response.AddResponseStatus(1, "Ocurrió un error, no se logró crear el registro.", ex.Message);
                 LogError excepcion = (LogError)ex;
                 excepcion.InformacionAdicional = exceptionHandler.InformacionAdicionalMetodo("BaseService", "Crear");
-                exceptionHandler.SaveException(ex);
+                exceptionHandler.SaveException(excepcion);
             }
             return response;
         }
@@ -108,7 +108,7 @@ namespace Planilla.Services
                 response.AddResponseStatus(1, "Ocurrió un error, no se logró crear el registro.", ex.Message);
                 LogError excepcion = (LogError)ex;
                 excepcion.InformacionAdicional = exceptionHandler.InformacionAdicionalMetodo("BaseService", "Crear");
-                exceptionHandler.SaveException(ex);
+                exceptionHandler.SaveException(excepcion);
             }
             return response;
         }

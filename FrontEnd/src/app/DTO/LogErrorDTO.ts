@@ -1,5 +1,5 @@
-export class ErrorLogDTO {
-    errorLogId:number;
+export class LogErrorDTO {
+    logErrorId:number;
     modulo: string;
     entorno?: string;
     informacionAdicional?: string;

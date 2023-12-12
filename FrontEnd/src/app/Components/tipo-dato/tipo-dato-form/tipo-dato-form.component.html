@@ -1,0 +1,35 @@
+<p-tabView>
+    <p-tabPanel header="Detalles de tipo de dato" class="line-height-3 m-0" leftIcon="pi pi-bookmark-fill"
+        tooltip="Detalles de tipo de dato">
+        <form [formGroup]="form" (ngSubmit)="onSubmit(form)" class="grid p-fluid">
+            <div class="field col-12 md:col-6">
+                <label htmlFor="codigo">Código</label>
+                <input pInputText id="codigo" formControlName="codigo" type="text"/>
+                <small class="ng-dirty ng-invalid" *ngIf="form.get('codigo').invalid && (form.get('codigo').dirty || form.get('codigo').touched)">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="nombre">Nombre</label>
+                <input pInputText id="nombre" formControlName="nombre" type="text"/>
+                <small class="ng-dirty ng-invalid" *ngIf="form.get('nombre').invalid && (form.get('nombre').dirty || form.get('nombre').touched)">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="descripcion">Descripción</label>
+                <input pInputText id="descripcion" formControlName="descripcion" type="text"/>
+                <small class="ng-dirty ng-invalid" *ngIf="form.get('descripcion').invalid && (form.get('descripcion').dirty || form.get('descripcion').touched)">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="formato">Formato</label>
+                <input pInputText id="formato" formControlName="formato" type="text"/>
+                <small class="ng-dirty ng-invalid" *ngIf="form.get('formato').invalid && (form.get('formato').dirty || form.get('formato').touched)">Este campo es
+                    requerido.</small>
+            </div>
+            <div class="flex field col-12 justify-content-center gap-2">
+                <p-button label="Guardar" styleClass="p-button-success" type="submit" [disabled]="form.invalid"></p-button>
+                <p-button label="Cerrar" styleClass="p-button-danger" (click)="cerrarVentana()"></p-button>
+            </div>
+        </form>
+    </p-tabPanel>
+</p-tabView>

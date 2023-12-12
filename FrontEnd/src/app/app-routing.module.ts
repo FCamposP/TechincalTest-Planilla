@@ -20,6 +20,10 @@ import { ComponentesComponent } from './Components/componentes/componentes.compo
 import { ConfiguracionGlobalComponent } from './Components/configuracion-global/configuracion-global.component';
 import { AppNotfoundComponent } from '../app/Components/not-found/app.notfound.component';
 import { ErrorLogComponent } from './Components/error-log/error-log.component';
+import { TipoDatoComponent } from './Components/tipo-dato/tipo-dato.component';
+import { ColumnaExcelComponent } from './Components/columna-excel/columna-excel.component';
+import { PlanillaPagosComponent } from './Components/planilla-pagos/planilla-pagos.component';
+import { BoletaPagoComponent } from './Components/boleta-pago/boleta-pago.component';
 
 @NgModule({
     imports: [
@@ -42,8 +46,12 @@ import { ErrorLogComponent } from './Components/error-log/error-log.component';
                     { path: 'componentes', component: ComponentesComponent ,canActivate: [AuthGuard]},
                     { path: 'usuario', component: UsuarioComponent ,canActivate: [AuthGuard]},
                     { path: 'tipo-componente', component: TipoComponenteComponent ,canActivate: [AuthGuard]},
+                    { path: 'tipo-dato', component: TipoDatoComponent ,canActivate: [AuthGuard]},
                     { path: 'configuracion-global', component: ConfiguracionGlobalComponent, canActivate: [AuthGuard]},
                     { path: 'error-logs', component: ErrorLogComponent, canActivate: [AuthGuard]},
+                    { path: 'columnas-excel', component: ColumnaExcelComponent, canActivate: [AuthGuard]},
+                    { path: 'planilla-pagos', component: PlanillaPagosComponent, canActivate: [AuthGuard]},
+                    { path: 'boletas-pagos', component: BoletaPagoComponent, canActivate: [AuthGuard]},
                     { path: 'notfound', component: AppNotfoundComponent},
                     
                 ]

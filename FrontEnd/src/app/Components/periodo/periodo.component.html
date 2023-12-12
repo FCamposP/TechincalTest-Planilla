@@ -41,9 +41,6 @@
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
-                        <th pSortableColumn="tipoPeriodoNombre">
-                            Tipo Periodo <p-sortIcon field="tipoPeriodoNombre"></p-sortIcon>
-                        </th>
                         <th pSortableColumn="descripcion">
                             Descripción
                             <p-sortIcon field="Descripcion"></p-sortIcon>
@@ -61,26 +58,22 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-registro>
                     <tr>
-                        <td>
+                        <td  style="width: 5%; min-width: 10rem">
                             <p-tableCheckbox [value]="registro"></p-tableCheckbox>
                         </td>
-                        <td style="width: 35%; min-width: 10rem">
-                            <span class="p-column-title">Tipo Periodo</span>
-                            {{ registro.tipoPeriodoNombre }}
-                        </td>
-                        <td style="width: 20%; min-width: 10rem">
+                        <td style="width: 30%; min-width: 10rem">
                             <span class="p-column-title">Descripción</span>
                             {{ registro.descripcion }}
                         </td>
-                        <td style="width: 10%; min-width: 10rem">
+                        <td style="width: 20%; min-width: 10rem">
                             <span class="p-column-title">Habilitado</span>
                             {{ registro.habilitado }}
                         </td>
-                        <td style="width: 20%; min-width: 10rem">
+                        <td style="width: 25%; min-width: 10rem">
                             <span class="p-column-title">creado</span>
                             {{ registro.creado | date:'dd/MM/yyy hh:mm:ss a' }}
                         </td>
-                        <td style="width: 15%; min-width: 10rem">
+                        <td style="width: 25%; min-width: 10rem">
                             <div class="flex">
                                 <button *ngIf="editar" pButton pRipple icon="pi pi-pencil"
                                     class="p-button-rounded p-button-warning mr-2"
