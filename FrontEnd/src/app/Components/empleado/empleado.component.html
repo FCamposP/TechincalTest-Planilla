@@ -44,6 +44,9 @@
                         <th pSortableColumn="nombrePuesto">
                             Puesto <p-sortIcon field="nombrePuesto"></p-sortIcon>
                         </th>
+                        <th pSortableColumn="codigo">
+                            Código <p-sortIcon field="codigo"></p-sortIcon>
+                        </th>
                         <th pSortableColumn="nombres">
                             Nombres
                             <p-sortIcon field="nombre"></p-sortIcon>
@@ -76,6 +79,10 @@
                             <span class="p-column-title">Puesto</span>
                             {{ registro.nombrePuesto }}
                         </td>
+                        <td style="width: 10%; min-width: 10rem">
+                            <span class="p-column-title">Código</span>
+                            {{ registro.codigo }}
+                        </td>
                         <td style="width: 20%; min-width: 10rem">
                             <span class="p-column-title">Nombres</span>
                             {{ registro.primerNombre }} {{registro.segundoNombre}}
@@ -88,15 +95,15 @@
                             <span class="p-column-title">Email</span>
                             {{ registro.email }}
                         </td>
-                        <td style="width: 10%; min-width: 10rem">
+                        <td style="width: 5%; min-width: 10rem">
                             <span class="p-column-title">Teléfono</span>
                             {{ registro.telefono }}
                         </td>
-                        <td style="width: 20%; min-width: 10rem">
+                        <td style="width: 15%; min-width: 10rem">
                             <span class="p-column-title">creado</span>
                             {{ registro.creado | date:'dd/MM/yyy hh:mm:ss a' }}
                         </td>
-                        <td style="width: 10%; min-width: 10rem">
+                        <td style="width: 5%; min-width: 10rem">
                             <div class="flex">
                                 <button *ngIf="editar" pButton pRipple icon="pi pi-pencil"
                                     class="p-button-rounded p-button-warning mr-2"

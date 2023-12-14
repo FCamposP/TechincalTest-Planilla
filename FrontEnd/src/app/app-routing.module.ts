@@ -52,6 +52,7 @@ import { BoletaPagoComponent } from './Components/boleta-pago/boleta-pago.compon
                     { path: 'columnas-excel', component: ColumnaExcelComponent, canActivate: [AuthGuard]},
                     { path: 'planilla-pagos', component: PlanillaPagosComponent, canActivate: [AuthGuard]},
                     { path: 'boletas-pagos', component: BoletaPagoComponent, canActivate: [AuthGuard]},
+                    
                     { path: 'notfound', component: AppNotfoundComponent},
                     
                 ]

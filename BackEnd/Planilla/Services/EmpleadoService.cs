@@ -94,6 +94,7 @@ namespace Planilla.Services
             {
                 Empleado registroGuardar = new Empleado();
                 registroGuardar = _mapper.Map<EmpleadoDTO, Empleado>(registro);
+                registroGuardar.Codigo = await GenerarCodigoEmpleado(registroGuardar);
                 var result = await Crear(registroGuardar, userId);
 
                 response.Data = _mapper.Map<Empleado, EmpleadoDTO>(result.Data ?? new Empleado());
@@ -149,6 +150,24 @@ namespace Planilla.Services
                 exceptionHandler.SaveException(ex);
             }
             return response;
+        }
+
+        private async Task<string> GenerarCodigoEmpleado(Empleado empleado)
+        {
+            string codigo=string.Empty;
+            if (empleado != null)
+            {
+                codigo = empleado.PrimerNombre.First() + empleado.PrimerApellido + DateTime.Now.Year.ToString();
+                var empleadoCodigo = await _dBContext.Empleado.Where(x=>x.Codigo.Contains(codigo)==true).ToListAsync();
+                int correlativo = 1;
+                if(empleadoCodigo.Count > 0)
+                {
+                    correlativo = (empleadoCodigo.Count + 1);
+                }
+                codigo += correlativo.ToString("D2");
+                codigo =codigo.ToUpper();
+            }
+            return codigo;
         }
 
     }

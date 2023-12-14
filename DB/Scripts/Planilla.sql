@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2016                    */
-/* Created on:     12/12/2023 3:37:23 PM                        */
+/* Created on:     12/13/2023 5:49:31 PM                        */
 /*==============================================================*/
 
 
@@ -30,6 +30,13 @@ if exists (select 1
    where r.fkeyid = object_id('DetallePlanilla') and o.name = 'FK_DETALLEP_REFERENCE_ENCABEZA')
 alter table DetallePlanilla
    drop constraint FK_DETALLEP_REFERENCE_ENCABEZA
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('DetallePlanilla') and o.name = 'FK_DETALLEP_REFERENCE_EMPLEADO')
+alter table DetallePlanilla
+   drop constraint FK_DETALLEP_REFERENCE_EMPLEADO
 go
 
 if exists (select 1
@@ -957,12 +964,13 @@ go
 /*==============================================================*/
 create table DetallePlanilla (
    DetallePlanillaId    int                  identity,
-   EncabezadoPlanillaId int                  null,
-   FechaCorte           datetime             not null,
+   EncabezadoPlanillaId int                  not null,
+   EmpleadoId           int                  not null,
+   Salario              money                not null,
    DescuentoISSS        money                not null,
    DescuentoAFP         money                not null,
    DescuentoRenta       money                not null,
-   DescuentoOtros       money                not null,
+   OtrosDescuentos      money                not null,
    SueldoNeto           money                null,
    Activo               bit                  not null default 1,
    Creador              int                  not null default 1,
@@ -973,11 +981,31 @@ create table DetallePlanilla (
 )
 go
 
+if exists(select 1 from sys.extended_properties p where
+      p.major_id = object_id('DetallePlanilla')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'EmpleadoId')
+)
+begin
+   declare @CurrentUser sysname
+select @CurrentUser = user_name()
+execute sp_dropextendedproperty 'MS_Description', 
+   'schema', @CurrentUser, 'table', 'DetallePlanilla', 'column', 'EmpleadoId'
+
+end
+
+
+select @CurrentUser = user_name()
+execute sp_addextendedproperty 'MS_Description', 
+   'Identificador de un empleado',
+   'schema', @CurrentUser, 'table', 'DetallePlanilla', 'column', 'EmpleadoId'
+go
+
 /*==============================================================*/
 /* Table: Empleado                                              */
 /*==============================================================*/
 create table Empleado (
    EmpleadoId           int                  identity,
+   Codigo               varchar(15)          not null,
    PuestoId             int                  null,
    PrimerNombre         varchar(100)         null,
    SegundoNombre        varchar(100)         null,
@@ -1266,8 +1294,10 @@ create table EncabezadoPlanilla (
    PeriodoId            int                  null,
    EstadoPlanillaId     int                  null,
    Descripcion          varchar(500)         not null,
+   FechaCorte           datetime             null,
    EnviarCorreo         bit                  null default 0,
    CorreoEnviado        bit                  null default 0,
+   Habilitado           bit                  null default 1,
    Activo               bit                  null default 1,
    Creador              int                  not null default 1,
    Creado               datetime             not null default GETDATE(),
@@ -1301,7 +1331,7 @@ go
 /*==============================================================*/
 create table EstadoPlanilla (
    EstadoPlanillaId     int                  identity,
-   Codigo               varchar(10)          not null,
+   Codigo               varchar(25)          not null,
    Nombre               varchar(250)         not null,
    Descripcion          varchar(500)         null,
    Activo               bit                  not null default 1,
@@ -3516,6 +3546,11 @@ go
 alter table DetallePlanilla
    add constraint FK_DETALLEP_REFERENCE_ENCABEZA foreign key (EncabezadoPlanillaId)
       references EncabezadoPlanilla (EncabezadoPlanillaId)
+go
+
+alter table DetallePlanilla
+   add constraint FK_DETALLEP_REFERENCE_EMPLEADO foreign key (EmpleadoId)
+      references Empleado (EmpleadoId)
 go
 
 alter table Empleado

@@ -1,0 +1,38 @@
+<p-card>
+  <div class="grid p-fluid">
+    <div class="field col-12 md:col-5">
+      <p-fileUpload name="demo[]" url="" (onSelect)="onUpload($event)" (onRemove)="clearData()" multiple="multiple" [disabled]="deshabilitar"
+        accept=".xlsx, .xls" maxFileSize="{{tamanioMaximo}}" [auto]="true" chooseLabel="Subir archivo">
+      </p-fileUpload>
+
+    </div>
+    <div class="field col-12 md:col-7">
+        <form [formGroup]="form" class="grid p-fluid">
+          <div class="field col-12 md:col-6">
+              <label htmlFor="periodoActivoSelected">Periodo</label>
+              <p-dropdown [options]="listaPeriodos" formControlName="periodoActivoSelected" optionLabel="descripcion" [disabled]="deshabilitar"
+                  placeholder="Seleccionar periodo" id="periodoActivoSelected"></p-dropdown>
+              <small class="ng-dirty ng-invalid"
+                  *ngIf="form.get('periodoActivoSelected').invalid && (form.get('periodoActivoSelected').dirty || form.get('periodoActivoSelected').touched)">Este campo es
+                  requerido.</small>
+          </div>
+          <div class="field col-12 md:col-6">
+            <label htmlFor="estadoPlanillaSelected">Estado</label>
+            <p-dropdown [options]="listaEstados" formControlName="estadoPlanillaSelected" optionLabel="nombre" [disabled]="deshabilitar"
+                placeholder="Seleccionar estado" id="estadoPlanillaSelected"></p-dropdown>
+            <small class="ng-dirty ng-invalid"
+                *ngIf="form.get('estadoPlanillaSelected').invalid && (form.get('estadoPlanillaSelected').dirty || form.get('estadoPlanillaSelected').touched)">Este campo es
+                requerido.</small>
+        </div>
+      </form>
+      <div class="grid">
+        <button  pButton pRipple label="Guardar planilla" icon="pi pi-plus" class="p-button-success mr-2" (click)="onSubmit()" [disabled]="registros.length==0 ||deshabilitar"></button>
+      </div>
+
+    </div>
+
+    <hr>
+
+  </div>
+  <app-tabla-pagos [detallePagos]="registros" [deshabilitarTabla]="deshabilitar"></app-tabla-pagos>
+</p-card>

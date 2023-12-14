@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { TablaPagosComponent } from './tabla-pagos/tabla-pagos.component';
 import { MenuItem } from 'primeng/api';
 import { saveAs } from 'file-saver';
+import { CargarPlanillaComponent } from './cargar-planilla/cargar-planilla.component';
 
 @Component({
   selector: 'app-planilla-pagos',
@@ -23,8 +24,6 @@ export class PlanillaPagosComponent implements OnInit, OnDestroy {
   textoHeaderDialogo = '';
   registrosSeleccionados: EncabezadoPlanillaDTO[];
 
-  itemsDescarga: MenuItem[];
-
 
   constructor(private sharedService: SharedService, private service: appServices<any>, public dialogService: DialogService) { }
 
@@ -32,16 +31,6 @@ export class PlanillaPagosComponent implements OnInit, OnDestroy {
       this.registrosSeleccionados = [];
       this.ObtenerRegistros();
       this.buscarPermisos();
-
-      this.itemsDescarga = [
-        {
-          label: 'Descargar PDF',
-          icon: 'pi pi-download',
-          command: () => {
-            // this.descargarArchivo('pdf');
-          }
-        },
-      ];
   }
 
   crear: boolean = false;
@@ -49,9 +38,9 @@ export class PlanillaPagosComponent implements OnInit, OnDestroy {
   eliminar: boolean = false;
 
   buscarPermisos() {
-      this.crear = this.sharedService.buscarPermisoAcciones("planillapagos", "Crear");
-      this.editar = this.sharedService.buscarPermisoAcciones("planillapagos", "Editar");
-      this.eliminar = this.sharedService.buscarPermisoAcciones("planillapagos", "Eliminar");
+      this.crear = this.sharedService.buscarPermisoAcciones("planilla", "Crear");
+      this.editar = this.sharedService.buscarPermisoAcciones("planilla", "Editar");
+      this.eliminar = this.sharedService.buscarPermisoAcciones("planilla", "Eliminar");
   }
 
   crearNuevo() {
@@ -67,14 +56,14 @@ export class PlanillaPagosComponent implements OnInit, OnDestroy {
   }
 
   mostrarDialogo(registroId) {
-      this.ref = this.dialogService.open(TablaPagosComponent, {
+      this.ref = this.dialogService.open(CargarPlanillaComponent, {
           data: {
               registroId: registroId,
               esNuevo: this.esNuevo
           },
           header: this.textoHeaderDialogo,
-          width: '60%',
-          height: '50%',
+          width: '85%',
+          height: '80%',
           styleClass: 'dynamicDialog'
       });
 
@@ -87,7 +76,7 @@ export class PlanillaPagosComponent implements OnInit, OnDestroy {
   }
 
   ObtenerRegistros() {
-      this.service.OtroGet('planillapagos', '', null).subscribe((data: EncabezadoPlanillaDTO[]) => {
+      this.service.OtroGet('planilla', '', null).subscribe((data: EncabezadoPlanillaDTO[]) => {
           this.listaRegistros = data;
       }
       );
@@ -108,7 +97,7 @@ export class PlanillaPagosComponent implements OnInit, OnDestroy {
               let queryParams = new HttpParams();
               queryParams = queryParams.append("id", registroId);
 
-              this.service.OtroDelete('planillapagos', '', queryParams).subscribe((data: EncabezadoPlanillaDTO) => {
+              this.service.OtroDelete('planilla', '', queryParams).subscribe((data: EncabezadoPlanillaDTO) => {
                   if (data != null) {
                       Swal.fire({ position: 'top-end', icon: 'success', text: 'Registro eliminado con éxito', showConfirmButton: false, timer: 3500, toast: true });
                       this.ObtenerRegistros();
@@ -118,6 +107,35 @@ export class PlanillaPagosComponent implements OnInit, OnDestroy {
           }
       })
   }
+
+  
+  deshabilitarPlanilla(registroId) {
+    let planilla=this.listaRegistros.find(x=>x.encabezadoPlanillaId==registroId);
+
+    Swal.fire({
+        title: planilla.habilitado==true?'Deshabilitar':"Habilitar",
+        text: planilla.habilitado==true?"¿Realmente desea deshabilitar la planilla?. Ya no será visible a los empleados": "¿Realmente desea habilitar la planilla?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let queryParams = new HttpParams();
+            queryParams = queryParams.append("id", registroId);
+
+            this.service.OtroPost('planilla', 'DeshabilitarPlanilla',null, queryParams).subscribe((data: EncabezadoPlanillaDTO) => {
+                if (data != null) {
+                    Swal.fire({ position: 'top-end', icon: 'success', text: 'Planilla actualizada con éxito', showConfirmButton: false, timer: 3500, toast: true });
+                    this.ObtenerRegistros();
+                }
+            }
+            );
+        }
+    })
+}
 
   eliminarMultiplesRegistros() {
       if (this.registrosSeleccionados.length > 0) {
@@ -136,7 +154,7 @@ export class PlanillaPagosComponent implements OnInit, OnDestroy {
                   this.registrosSeleccionados.forEach(element => {
                       listaIds.push(element.encabezadoPlanillaId);
                   });
-                  this.service.OtroPost('puesto', 'EliminarMultiples', listaIds).subscribe((data: EncabezadoPlanillaDTO) => {
+                  this.service.OtroPost('planilla', 'EliminarMultiples', listaIds).subscribe((data: EncabezadoPlanillaDTO) => {
                       if (data != null) {
                           Swal.fire({ position: 'top-end', icon: 'success', text: 'Registro eliminado con éxito', showConfirmButton: false, timer: 3500, toast: true });
                           this.ObtenerRegistros();
@@ -155,7 +173,6 @@ export class PlanillaPagosComponent implements OnInit, OnDestroy {
       }
     }
     );
-
   }
 
   downloadPDF(plantilla) {

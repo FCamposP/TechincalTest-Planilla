@@ -11,6 +11,10 @@
                     requerido.</small>
             </div>
             <div class="field col-12 md:col-6">
+                <label htmlFor="codigo">Código</label>
+                <input pInputText id="codigo" formControlName="codigo" type="text" disabled="true"/>
+            </div>
+            <div class="field col-12 md:col-6">
                 <label htmlFor="primerNombre">Primer Nombre</label>
                 <input pInputText id="primerNombre" formControlName="primerNombre" type="text"/>
                 <small class="ng-dirty ng-invalid" *ngIf="form.get('primerNombre').invalid && (form.get('primerNombre').dirty || form.get('primerNombre').touched)">Este campo es

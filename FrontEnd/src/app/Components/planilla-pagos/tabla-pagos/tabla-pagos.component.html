@@ -1,3 +1,129 @@
-<p>
-  tabla-pagos works!
-</p>
+<p-table #tablaPlanillaPagos  [value]="detallePagos"
+responsiveLayout="scroll" [globalFilterFields]="['codigoEmpleado','salario','descuentoIsss','descuentoAfp','descuentoRenta','sueldoNeto']" [rows]="20" [paginator]="true"
+[rowsPerPageOptions]="[10, 20, 30]" [showCurrentPageReport]="true"
+currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros" [rowHover]="true"
+dataKey="codigoEmpleado">
+<ng-template pTemplate="caption">
+    <div class="grid grid-nogutter md:flex-row justify-content-between">
+        <div>
+            <h5 class="m-0">Carga de Planilla</h5>
+        </div>
+        <div col-12 sm:col-3 md:col-6 lg:col-3>
+        </div>
+        <div col-12 sm:col-3 md:col-6 lg:col-3>
+
+            <span class="p-input-icon-left mb-2 md:mb-0">
+                <i class="pi pi-search"></i>
+                <input type="search" pInputText placeholder="Buscar..."
+                    (input)="dt.filterGlobal($event.target.value, 'contains')">
+            </span>
+        </div>
+    </div>
+</ng-template>
+<ng-template pTemplate="header">
+    <tr>
+        <th pSortableColumn="codigoEmpleado">
+            Codigo Empleado
+            <p-sortIcon field="codigoEmpleado"></p-sortIcon>
+        </th>
+        <th pSortableColumn="salario">
+            Salario
+            <p-sortIcon field="salario"></p-sortIcon>
+        </th>
+        <th pSortableColumn="descuentoIsss">
+          Descuento Isss
+            <p-sortIcon field="descuentoIsss"></p-sortIcon>
+        </th>
+        <th pSortableColumn="descuentoAfp">
+          Descuento Afp
+          <p-sortIcon field="descuentoAfp"></p-sortIcon>
+      </th>
+      <th pSortableColumn="descuentoRenta">
+        Descuento Renta
+          <p-sortIcon field="descuentoRenta"></p-sortIcon>
+      </th>
+      <th pSortableColumn="otrosDescuentos">
+        Otros descuentos
+          <p-sortIcon field="otrosDescuentos"></p-sortIcon>
+      </th>
+        <th pSortableColumn="sueldoNeto">
+          Sueldo Neto
+          <p-sortIcon field="sueldoNeto"></p-sortIcon>
+      </th>
+    </tr>
+</ng-template>
+<ng-template pTemplate="body" let-registro>
+    <tr>
+      <td pEditableColumn>
+        <p-cellEditor>
+            <ng-template pTemplate="input">
+                <input pInputText type="text" [(ngModel)]="registro.codigoEmpleado" (change)="actualizarDetalle(registro)" [disabled]="deshabilitarTabla">
+            </ng-template>
+            <ng-template pTemplate="output">
+                {{registro.codigoEmpleado}}
+            </ng-template>
+        </p-cellEditor>
+    </td>
+    <td pEditableColumn>
+      <p-cellEditor>
+          <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="registro.salario" (change)="(actualizarDetalle(registro))" [disabled]="deshabilitarTabla">
+          </ng-template>
+          <ng-template pTemplate="output">
+              {{registro.salario}}
+          </ng-template>
+      </p-cellEditor>
+  </td>
+  <td pEditableColumn>
+    <p-cellEditor>
+        <ng-template pTemplate="input">
+            <input pInputText type="text" [(ngModel)]="registro.descuentoIsss" (change)="actualizarDetalle(registro)" [disabled]="deshabilitarTabla">
+        </ng-template>
+        <ng-template pTemplate="output">
+            {{registro.descuentoIsss}}
+        </ng-template>
+    </p-cellEditor>
+</td>
+<td pEditableColumn>
+  <p-cellEditor>
+      <ng-template pTemplate="input">
+          <input pInputText type="text" [(ngModel)]="registro.descuentoAfp" (change)="actualizarDetalle(registro)" [disabled]="deshabilitarTabla">
+      </ng-template>
+      <ng-template pTemplate="output">
+          {{registro.descuentoAfp}}
+      </ng-template>
+  </p-cellEditor>
+</td>
+<td pEditableColumn>
+  <p-cellEditor>
+      <ng-template pTemplate="input">
+          <input pInputText type="text" [(ngModel)]="registro.descuentoRenta" (change)="actualizarDetalle(registro)" [disabled]="deshabilitarTabla">
+      </ng-template>
+      <ng-template pTemplate="output">
+          {{registro.descuentoRenta}}
+      </ng-template>
+  </p-cellEditor>
+</td>
+<td pEditableColumn>
+    <p-cellEditor>
+        <ng-template pTemplate="input">
+            <input pInputText type="text" [(ngModel)]="registro.otrosDescuentos" (change)="actualizarDetalle(registro)" [disabled]="deshabilitarTabla">
+        </ng-template>
+        <ng-template pTemplate="output">
+            {{registro.otrosDescuentos}}
+        </ng-template>
+    </p-cellEditor>
+  </td>
+<td pEditableColumn>
+  <p-cellEditor>
+      <ng-template pTemplate="input">
+          <input pInputText type="text" [(ngModel)]="registro.sueldoNeto" (change)="actualizarDetalle(registro)" [disabled]="deshabilitarTabla">
+      </ng-template>
+      <ng-template pTemplate="output">
+          {{registro.sueldoNeto}}
+      </ng-template>
+  </p-cellEditor>
+</td>
+    </tr>
+</ng-template>
+</p-table>

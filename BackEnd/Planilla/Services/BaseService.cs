@@ -113,16 +113,16 @@ namespace Planilla.Services
             return response;
         }
 
-        public async Task<ResponseWrapperDTO<T>> Actualizar(T entidad, int userId)
+        public async Task<ResponseWrapperDTO<T>> Actualizar(T entity, int userId)
         {
             ResponseWrapperDTO<T> response = new ResponseWrapperDTO<T>();
             try
             {
-                GuardarPropiedad("Modificador", entidad, userId);
-                GuardarPropiedad("Modificado", entidad, DateTime.Now);
-                _dBContext.Update<T>(entidad);
+                GuardarPropiedad("Modificador", entity, userId);
+                GuardarPropiedad("Modificado", entity, DateTime.Now);
+                _dBContext.Update<T>(entity);
                 await _dBContext.SaveChangesAsync();
-                response.Data = entidad;
+                response.Data = entity;
             }
             catch (Exception ex)
             {

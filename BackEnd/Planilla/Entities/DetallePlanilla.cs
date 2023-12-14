@@ -10,12 +10,13 @@ namespace Planilla.Entities
     public partial class DetallePlanilla
     {
         public int DetallePlanillaId { get; set; }
-        public int? EncabezadoPlanillaId { get; set; }
-        public DateTime FechaCorte { get; set; }
+        public int EncabezadoPlanillaId { get; set; }
+        public int EmpleadoId { get; set; }
+        public decimal Salario { get; set; }
         public decimal DescuentoIsss { get; set; }
         public decimal DescuentoAfp { get; set; }
         public decimal DescuentoRenta { get; set; }
-        public decimal DescuentoOtros { get; set; }
+        public decimal OtrosDescuentos { get; set; }
         public decimal? SueldoNeto { get; set; }
         public bool? Activo { get; set; }
         public int Creador { get; set; }
@@ -23,6 +24,7 @@ namespace Planilla.Entities
         public int? Modificador { get; set; }
         public DateTime? Modificado { get; set; }
 
+        public virtual Empleado Empleado { get; set; }
         public virtual EncabezadoPlanilla EncabezadoPlanilla { get; set; }
     }
 }

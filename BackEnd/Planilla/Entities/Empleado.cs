@@ -11,10 +11,12 @@ namespace Planilla.Entities
     {
         public Empleado()
         {
+            DetallePlanilla = new HashSet<DetallePlanilla>();
             Usuario = new HashSet<Usuario>();
         }
 
         public int EmpleadoId { get; set; }
+        public string Codigo { get; set; }
         public int? PuestoId { get; set; }
         public string PrimerNombre { get; set; }
         public string SegundoNombre { get; set; }
@@ -29,6 +31,7 @@ namespace Planilla.Entities
         public DateTime? Modificado { get; set; }
 
         public virtual Puesto Puesto { get; set; }
+        public virtual ICollection<DetallePlanilla> DetallePlanilla { get; set; }
         public virtual ICollection<Usuario> Usuario { get; set; }
     }
 }

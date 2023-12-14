@@ -9,6 +9,7 @@ namespace Planilla.DTO
     public class EmpleadoDTO
     {
         public int EmpleadoId { get; set; }
+        public string Codigo { get; set; }
         public int PuestoId { get; set; }
         public string? NombrePuesto { get; set; }
         public string? PrimerNombre { get; set; }

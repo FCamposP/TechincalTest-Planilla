@@ -13,7 +13,6 @@ namespace Planilla.DataAccess
     public partial class ApiDBContext : DbContext
     {
         private readonly IConfiguration _configuration;
-        //private IDbConnection DbConnection { get; }
         public ApiDBContext()
         {
         }
@@ -30,7 +29,6 @@ namespace Planilla.DataAccess
                 optionsBuilder.UseSqlServer(this._configuration.GetConnectionString("SqlServerQEQDB"));
             }
         }
-
 
         public virtual DbSet<ColumnaExcel> ColumnaExcel { get; set; }
         public virtual DbSet<Componente> Componente { get; set; }
@@ -59,7 +57,7 @@ namespace Planilla.DataAccess
             foreach (var entityType in entityTypes)
             {
                 var isActiveProperty = entityType.FindProperty("Activo");
-                if (isActiveProperty != null && isActiveProperty.ClrType == typeof(bool))
+                if (isActiveProperty != null && isActiveProperty.ClrType == typeof(bool?))
                 {
                     var entityBuilder = modelBuilder.Entity(entityType.ClrType);
                     var parameter = Expression.Parameter(entityType.ClrType, "e");
@@ -249,19 +247,28 @@ namespace Planilla.DataAccess
                     .HasColumnName("DescuentoISSS")
                     .HasColumnType("money");
 
-                entity.Property(e => e.DescuentoOtros).HasColumnType("money");
-
                 entity.Property(e => e.DescuentoRenta).HasColumnType("money");
 
-                entity.Property(e => e.FechaCorte).HasColumnType("datetime");
+                entity.Property(e => e.EmpleadoId).HasComment("Identificador de un empleado");
 
                 entity.Property(e => e.Modificado).HasColumnType("datetime");
 
+                entity.Property(e => e.OtrosDescuentos).HasColumnType("money");
+
+                entity.Property(e => e.Salario).HasColumnType("money");
+
                 entity.Property(e => e.SueldoNeto).HasColumnType("money");
+
+                entity.HasOne(d => d.Empleado)
+                    .WithMany(p => p.DetallePlanilla)
+                    .HasForeignKey(d => d.EmpleadoId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_DETALLEP_REFERENCE_EMPLEADO");
 
                 entity.HasOne(d => d.EncabezadoPlanilla)
                     .WithMany(p => p.DetallePlanilla)
                     .HasForeignKey(d => d.EncabezadoPlanillaId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_DETALLEP_REFERENCE_ENCABEZA");
             });
 
@@ -275,6 +282,11 @@ namespace Planilla.DataAccess
                     .IsRequired()
                     .HasDefaultValueSql("((1))")
                     .HasComment("Indica si un registro esta activo en el sistema");
+
+                entity.Property(e => e.Codigo)
+                    .IsRequired()
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Creado)
                     .HasColumnType("datetime")
@@ -349,6 +361,10 @@ namespace Planilla.DataAccess
 
                 entity.Property(e => e.EnviarCorreo).HasDefaultValueSql("((0))");
 
+                entity.Property(e => e.FechaCorte).HasColumnType("datetime");
+
+                entity.Property(e => e.Habilitado).HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.Modificado).HasColumnType("datetime");
 
                 entity.Property(e => e.PeriodoId).HasComment("Identificador del periodo");
@@ -372,7 +388,7 @@ namespace Planilla.DataAccess
 
                 entity.Property(e => e.Codigo)
                     .IsRequired()
-                    .HasMaxLength(10)
+                    .HasMaxLength(25)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Creado)

@@ -1,5 +1,6 @@
 export class EmpleadoDTO {
     empleadoId:number;
+    codigo:string;
     puestoId:number;
     nombrePuesto?: string;
     nombre: string;

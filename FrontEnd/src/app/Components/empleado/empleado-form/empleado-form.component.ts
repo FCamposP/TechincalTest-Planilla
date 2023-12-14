@@ -40,6 +40,7 @@ export class EmpleadoFormComponent implements OnInit {
 
     this.form = this.fb.group({
       puestoSelected: [new PuestoDTO(), Validators.required],
+      codigo:[''],
       primerNombre: ['', Validators.required],
       segundoNombre: ['', ],
       primerApellido: ['', Validators.required],
@@ -53,6 +54,7 @@ export class EmpleadoFormComponent implements OnInit {
   onSubmit(form: FormGroup){
     this.registro = {
       ...this.registro,
+      codigo:form.value.codigo,
       puestoId: form.value.puestoSelected.puestoId,
       primerNombre: form.value.primerNombre,
       segundoNombre: form.value.segundoNombre,
@@ -88,6 +90,7 @@ export class EmpleadoFormComponent implements OnInit {
 
         this.form.patchValue({
           puestoSelected: this.puestoSelected,
+          codigo:this.registro.codigo,
           primerNombre: this.registro.primerNombre,
           segundoNombre: this.registro.segundoNombre,
           primerApellido: this.registro.primerApellido,

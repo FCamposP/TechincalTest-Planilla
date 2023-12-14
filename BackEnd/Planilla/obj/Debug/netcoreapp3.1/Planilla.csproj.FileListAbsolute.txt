@@ -96,14 +96,13 @@ C:\Users\fabry\source\repos\TechnicalTest\BackEnd\Planilla\obj\Debug\netcoreapp3
 C:\Users\fabry\source\repos\TechnicalTest\BackEnd\Planilla\obj\Debug\netcoreapp3.1\Planilla.dll
 C:\Users\fabry\source\repos\TechnicalTest\BackEnd\Planilla\obj\Debug\netcoreapp3.1\Planilla.pdb
 C:\Users\fabry\source\repos\TechnicalTest\BackEnd\Planilla\obj\Debug\netcoreapp3.1\Planilla.genruntimeconfig.cache
+C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\bin\Debug\netcoreapp3.1\Planilla.dll
 C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\bin\Debug\netcoreapp3.1\appsettings.json
 C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\bin\Debug\netcoreapp3.1\Planilla.exe
 C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\bin\Debug\netcoreapp3.1\Planilla.deps.json
 C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\bin\Debug\netcoreapp3.1\Planilla.runtimeconfig.json
 C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\bin\Debug\netcoreapp3.1\Planilla.runtimeconfig.dev.json
-C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\bin\Debug\netcoreapp3.1\Planilla.dll
-C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\bin\Debug\netcoreapp3.1\Planilla.pdb
 C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\bin\Debug\netcoreapp3.1\AutoMapper.dll
 C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\bin\Debug\netcoreapp3.1\EPPlus.dll
@@ -194,3 +193,4 @@ C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\obj\Debug\netcor
 C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\obj\Debug\netcoreapp3.1\Planilla.dll
 C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\obj\Debug\netcoreapp3.1\Planilla.pdb
 C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\obj\Debug\netcoreapp3.1\Planilla.genruntimeconfig.cache
+C:\Users\fabry\source\repos\TechnicalTest\Repo\BackEnd\Planilla\bin\Debug\netcoreapp3.1\Planilla.pdb

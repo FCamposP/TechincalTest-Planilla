@@ -26,7 +26,7 @@ namespace Planilla.Services
             ResponseWrapperDTO<IList<ColumnaExcelDTO>> response = new ResponseWrapperDTO<IList<ColumnaExcelDTO>>();
             try
             {
-                var registros = await _dBContext.ColumnaExcel.Include(x => x.TipoDato).OrderByDescending(x => x.Creado).ToListAsync();
+                var registros = await _dBContext.ColumnaExcel.Include(x => x.TipoDato).OrderByDescending(x => x.ColumnaExcelId).ToListAsync();
                 if (registros != null)
                 {
                     response.Data = _mapper.Map<List<ColumnaExcelDTO>>(registros);

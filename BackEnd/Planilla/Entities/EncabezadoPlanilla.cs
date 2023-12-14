@@ -18,8 +18,10 @@ namespace Planilla.Entities
         public int? PeriodoId { get; set; }
         public int? EstadoPlanillaId { get; set; }
         public string Descripcion { get; set; }
+        public DateTime? FechaCorte { get; set; }
         public bool? EnviarCorreo { get; set; }
         public bool? CorreoEnviado { get; set; }
+        public bool? Habilitado { get; set; }
         public bool? Activo { get; set; }
         public int Creador { get; set; }
         public DateTime Creado { get; set; }
