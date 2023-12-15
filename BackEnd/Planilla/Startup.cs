@@ -57,6 +57,8 @@ namespace Planilla
 
             //Obtiene cadena de conexión a base de datos configurada en appsetting.json
             var connectionString = Configuration.GetConnectionString("SqlServerQEQDB");
+
+            //Implementacion de softdelete en ApiDBContext
             services.AddDbContext<ApiDBContext>(options =>
                 options.UseSqlServer(connectionString));
             services.AddScoped<Microsoft.EntityFrameworkCore.DbContext, ApiDBContext>();

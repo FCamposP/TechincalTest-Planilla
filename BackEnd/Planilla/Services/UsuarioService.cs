@@ -130,6 +130,12 @@ namespace Planilla.Services
             return response;
         }
 
+        /// <summary>
+        /// Elimina multiples registros a nivel de sistema
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<ResponseWrapperDTO<int>> EliminarMultiples(List<int> ids, int userId)
         {
             ResponseWrapperDTO<int> response = new ResponseWrapperDTO<int>();

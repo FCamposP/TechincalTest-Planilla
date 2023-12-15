@@ -30,6 +30,12 @@ namespace Planilla.Services
             _empleadoService = new EmpleadoService(context, appSettingsModule, mapper);
         }
 
+        /// <summary>
+        /// Creacion de nuevo usuario de sistema
+        /// </summary>
+        /// <param name="usuario"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<ResponseWrapperDTO<Usuario>> RegistrarUsuario(Usuario usuario, int userId)
         {
             ResponseWrapperDTO<Usuario> response = new ResponseWrapperDTO<Usuario>();
@@ -42,6 +48,13 @@ namespace Planilla.Services
             }
             return response;
         }
+
+        /// <summary>
+        /// Logueo de usuario con credenciales ingresadas
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="_configuration"></param>
+        /// <returns></returns>
         public async Task<ResponseWrapperDTO<LoginResponseDTO>> LoginUsuario(LoginDTO login, IConfiguration _configuration)
         {
             ResponseWrapperDTO<LoginResponseDTO> response = new ResponseWrapperDTO<LoginResponseDTO>();
@@ -58,6 +71,11 @@ namespace Planilla.Services
             return response;
         }
 
+        /// <summary>
+        /// Autenticacion de usuario en inicio de sesión
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
         private Usuario Autenticar(LoginDTO login)
         {
             Usuario? user = null;
@@ -71,6 +89,12 @@ namespace Planilla.Services
             return user;
         }
 
+        /// <summary>
+        /// Generacion de token para usuario logueado
+        /// </summary>
+        /// <param name="usuario"></param>
+        /// <param name="_config"></param>
+        /// <returns></returns>
         private async Task<TokenDTO> GenerarToken(Usuario usuario, IConfiguration _config)
         {
 
@@ -129,6 +153,12 @@ namespace Planilla.Services
         
         }
 
+        /// <summary>
+        /// Refresca el valor de un token de usuario
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="_config"></param>
+        /// <returns></returns>
         public ResponseWrapperDTO<TokenDTO>? RefrescarAccessToken(HttpRequest request, IConfiguration _config)
         {
             try

@@ -233,6 +233,12 @@ namespace Planilla.Services
             return response;
         }
 
+        /// <summary>
+        /// Elimina las configuraciones de permisos asociados al rol
+        /// </summary>
+        /// <param name="rolId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         private async Task<Rol> EliminarDependientes(int rolId, int userId)
         {
             Rol result=null;
@@ -258,6 +264,11 @@ namespace Planilla.Services
             return result;
         }
 
+        /// <summary>
+        /// Obtener roles asociados a un usuario
+        /// </summary>
+        /// <param name="usuarioId"></param>
+        /// <returns></returns>
         public async Task<ResponseWrapperDTO<List<RolDTO>>> GetRolesPorUsuario(int usuarioId)
         {
             ResponseWrapperDTO<List<RolDTO>> response = new ResponseWrapperDTO<List<RolDTO>>();
@@ -276,6 +287,10 @@ namespace Planilla.Services
             return response;
         }
 
+        /// <summary>
+        /// Obtiene estructura de componentes en forma de arbol para configurar permisos de componentes a un rol
+        /// </summary>
+        /// <returns></returns>
         public async Task<ResponseWrapperDTO<List<RolTree>>> GetComponentesTree()
         {
             ResponseWrapperDTO<List<RolTree>> response = new ResponseWrapperDTO<List<RolTree>>() { Data = new List<RolTree>() };
@@ -317,6 +332,13 @@ namespace Planilla.Services
             return response;
         }
 
+        /// <summary>
+        /// Agrupa los componentes hijos a un componente padre
+        /// </summary>
+        /// <param name="nodos"></param>
+        /// <param name="componentes"></param>
+        /// <param name="nodo"></param>
+        /// <returns></returns>
         private RolTree AnidarNodos(List<RolTree> nodos, IList<ComponenteDTO> componentes, RolTree nodo)
         {
             var hijosNodo = componentes.Where(x => x.PadreId.ToString() == nodo.Key).ToList();

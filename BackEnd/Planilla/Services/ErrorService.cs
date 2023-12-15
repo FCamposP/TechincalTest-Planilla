@@ -8,10 +8,18 @@ namespace Planilla.Services
     {
 
         public ILogErrorger Logger { get; set; }
+        /// <summary>
+        /// guarda excepcion por defecto
+        /// </summary>
+        /// <param name="ex"></param>
         public void RegisterException(Exception ex)
         {
             Logger.RegisterException(ex);
         }
+        /// <summary>
+        /// Guarda Excepcion personalizada
+        /// </summary>
+        /// <param name="ex"></param>
         public void RegisterException(LogError ex)
         {
             Logger.RegisterException(ex);

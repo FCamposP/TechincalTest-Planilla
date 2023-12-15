@@ -20,6 +20,12 @@ namespace Planilla.Services
             _dBContext = context;
         }
 
+        /// <summary>
+        /// Metodo encargado para valiar si un endpoint consultado esta permitodo para un usuario
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <param name="usuarioId"></param>
+        /// <returns></returns>
         public bool PermisoEndpoint(string endpoint, int usuarioId)
         {
             bool autorizado = false;

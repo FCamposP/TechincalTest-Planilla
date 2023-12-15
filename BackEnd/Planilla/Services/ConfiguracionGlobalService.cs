@@ -176,6 +176,11 @@ namespace Planilla.Services
             return response;
         }
 
+        /// <summary>
+        /// Guarda imagen en configuracion global del sistema
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public string UploadImage(ConfiguracionGlobalDTO data)
         {
 
@@ -186,7 +191,7 @@ namespace Planilla.Services
                 byte[] imageBytes = Convert.FromBase64String(data.Valor);
 
                 // Ruta completa de la carpeta donde deseas guardar el archivo
-                string folderPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "Content\\Images\\Recomendaciones");
+                string folderPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "Content\\Images");
 
 
                 // Nombre del archivo

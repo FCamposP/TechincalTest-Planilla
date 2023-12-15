@@ -232,6 +232,10 @@ namespace Planilla.Services
             return response;
         }
 
+        /// <summary>
+        /// Obtiene base64 de plantilla excel generado para importar planilla
+        /// </summary>
+        /// <returns></returns>
         public async Task<ResponseWrapperDTO<byte[]>> DescargarPlantilla()
         {
 
@@ -272,6 +276,10 @@ namespace Planilla.Services
             return response;
         }
 
+        /// <summary>
+        /// Obtiene datos iniciales para configurar una nueva planilla
+        /// </summary>
+        /// <returns></returns>
         public async Task<ResponseWrapperDTO<EncabezadoPlanillaDTO>> ObtenerDatosIniciales()
         {
 
@@ -295,6 +303,11 @@ namespace Planilla.Services
             return response;
         }
 
+        /// <summary>
+        /// Extrae informacion de excel y convierte a lista de DetallePlanillaDTO para visualizar en tabla editable
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
         public ResponseWrapperDTO<IList<DetallePlanillaDTO>> PrecargaExcel(IFormFile file)
         {
 
@@ -340,6 +353,12 @@ namespace Planilla.Services
             return response;
         }
 
+        /// <summary>
+        /// Deshabilitar una planilla para que ya no sea mostrada al empleado sin la necesitad de elimnar la planilla
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<ResponseWrapperDTO<bool>> DeshabilitarPlanilla(int id, int userId)
         {
             ResponseWrapperDTO<bool> response = new ResponseWrapperDTO<bool>();
@@ -364,6 +383,10 @@ namespace Planilla.Services
             return response;
         }
 
+        /// <summary>
+        /// Obtiene los años en los que el empleado ha devengado al menos un salario
+        /// </summary>
+        /// <returns></returns>
         public async Task<ResponseWrapperDTO<IList<int>>> ObtenerAnios()
         {
 
@@ -384,6 +407,11 @@ namespace Planilla.Services
             return response;
         }
 
+        /// <summary>
+        /// Obtiene los meses en los que el empleado ha devengado al menos un salario
+        /// </summary>
+        /// <param name="anio"></param>
+        /// <returns></returns>
         public async Task<ResponseWrapperDTO<IList<object>>> ObtenerMesesPlanilla(int anio)
         {
 
@@ -407,6 +435,13 @@ namespace Planilla.Services
             return response;
         }
 
+        /// <summary>
+        /// Obtiene lista resumen de boletas de pago de un empleado
+        /// </summary>
+        /// <param name="anio"></param>
+        /// <param name="mes"></param>
+        /// <param name="usuarioId"></param>
+        /// <returns></returns>
         public async Task<ResponseWrapperDTO<IList<ResumenBoletaPagoDTO>>> ObtenerResumenBoletaEmpleado(int anio, int mes, int usuarioId)
         {
 
@@ -432,7 +467,11 @@ namespace Planilla.Services
             return response;
         }
 
-
+        /// <summary>
+        /// Obtiene el detalle de una boleta de pago de un empleado
+        /// </summary>
+        /// <param name="detallePlanillaId"></param>
+        /// <returns></returns>
         public async Task<ResponseWrapperDTO<BoletaPagoDTO>> ObtenerDetalleBoletaPago(int detallePlanillaId)
         {
             ResponseWrapperDTO<BoletaPagoDTO> response = new ResponseWrapperDTO<BoletaPagoDTO>() { Data = new BoletaPagoDTO() };

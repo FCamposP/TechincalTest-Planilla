@@ -12,7 +12,7 @@ namespace Planilla.Utilities
     public class AesManaged
     {
         /// <summary>
-        /// Metodo para encriptar un texto
+        /// Metodo para encriptacion de texto
         /// </summary>
         /// <param name="clearText"></param>
         /// <returns></returns>
@@ -37,6 +37,12 @@ namespace Planilla.Utilities
             return clearText;
         }
 
+        /// <summary>
+        /// Desencriptacion de texto
+        /// </summary>
+        /// <param name="cipherText"></param>
+        /// <param name="encryptionKey"></param>
+        /// <returns></returns>
         public static string Decrypt(string cipherText, string encryptionKey)
         {
             byte[] cipherBytes = Convert.FromBase64String(cipherText);

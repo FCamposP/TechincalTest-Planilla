@@ -11,6 +11,9 @@ namespace Back.Utilidades
 {
     public class AutoMapperProfiles : Profile
     {
+        /// <summary>
+        /// Mapeo automatico entre entidades y DTO
+        /// </summary>
         public AutoMapperProfiles()
         {
             CreateMap<Componente, ComponenteDTO>()

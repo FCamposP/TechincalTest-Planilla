@@ -155,6 +155,11 @@ namespace Planilla.Services
             return response;
         }
 
+        /// <summary>
+        /// Obtiene la estructura de navegacion permitida para un usuario
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<ResponseWrapperDTO<List<ComponenteNavigation>>> ObtenerNavegacion(int userId)
         {
             ResponseWrapperDTO<List<ComponenteNavigation>> response = new ResponseWrapperDTO<List<ComponenteNavigation>>();

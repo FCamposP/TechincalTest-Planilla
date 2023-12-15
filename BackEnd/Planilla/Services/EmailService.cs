@@ -21,6 +21,12 @@ namespace Planilla.Services
             _dbContext = context;
         }
 
+        /// <summary>
+        /// Envio de correo por carga de boleta de pago a empleado
+        /// </summary>
+        /// <param name="empleado"></param>
+        /// <param name="fechaCorte"></param>
+        /// <returns></returns>
         public async Task<bool> EnviarEmailEmpleados(Empleado empleado, DateTime? fechaCorte)
         {
             bool result = false;

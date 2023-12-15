@@ -152,6 +152,11 @@ namespace Planilla.Services
             return response;
         }
 
+        /// <summary>
+        /// Genera codigo de empleado en base a primer nombre y primer apellido del empleado
+        /// </summary>
+        /// <param name="empleado"></param>
+        /// <returns></returns>
         private async Task<string> GenerarCodigoEmpleado(Empleado empleado)
         {
             string codigo=string.Empty;

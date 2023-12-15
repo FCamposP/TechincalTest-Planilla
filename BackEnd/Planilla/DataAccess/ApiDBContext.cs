@@ -52,6 +52,8 @@ namespace Planilla.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            //Implementacion de softdelete, solo utiliza registros "activos en el sistema" (con la propiedad Activo=1)
             var entityTypes = modelBuilder.Model.GetEntityTypes();
 
             foreach (var entityType in entityTypes)

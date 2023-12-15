@@ -24,6 +24,10 @@ namespace Planilla.Services.LogCustom
             RegisterException(value);
         }
 
+        /// <summary>
+        /// Registra excepcion personalizada con valores de modulo y ambiente del sistema
+        /// </summary>
+        /// <param name="ex"></param>
         public  void RegisterException(LogError ex)
         {
             ex.Creado = DateTime.Now;
