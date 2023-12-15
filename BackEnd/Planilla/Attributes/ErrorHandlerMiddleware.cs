@@ -24,6 +24,12 @@ namespace Planilla.Attributes
             _next = next;
         }
 
+        /// <summary>
+        /// Middelware para excepciones
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="LogErrorgerDB"></param>
+        /// <returns></returns>
         public async Task Invoke(HttpContext context, ILogErrorger LogErrorgerDB)
         {
             try
@@ -81,11 +87,6 @@ namespace Planilla.Attributes
                 await response.WriteAsync(result);
 
                 LogErrorsService.RegisterException(exDTO);
-                //if (!LogErrorsService.RegisterException(exDTO))
-                //{
-                //    LogErrorsService.Logger = new FileLogErrorger();
-                //    LogErrorsService.RegisterException(exDTO);
-                //}
             }
         }
     }

@@ -8,6 +8,11 @@ namespace Planilla.Abstractions
 {
     public interface IJwtUtils
     {
+        /// <summary>
+        /// Verifica si el token es válido
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public int? ValidateToken(string token);
     }
 }

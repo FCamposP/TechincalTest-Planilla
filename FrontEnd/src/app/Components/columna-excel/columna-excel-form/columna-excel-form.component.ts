@@ -128,5 +128,4 @@ export class ColumnaExcelFormComponent implements OnInit {
     this.ref.close();
   }
 
-
 }

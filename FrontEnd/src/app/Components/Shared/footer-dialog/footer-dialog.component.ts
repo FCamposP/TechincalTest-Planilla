@@ -11,6 +11,8 @@ export class FooterDialogComponent implements OnInit {
   @Output() cancelarEvent = new EventEmitter<boolean>();
 
   @Input() showGuardar: boolean = true;
+  @Input() deshabilitarGuardar: boolean = false;
+
 
   constructor() { }
 

@@ -28,6 +28,10 @@
       <div class="grid">
         <button  pButton pRipple label="Guardar planilla" icon="pi pi-plus" class="p-button-success mr-2" (click)="onSubmit()" [disabled]="registros.length==0 ||deshabilitar"></button>
       </div>
+      <hr>
+      <div class="grid"> 
+        <div  style="color: slateblue;" *ngIf="form.value.estadoPlanillaSelected!=null">{{form.value.estadoPlanillaSelected.nombre}}: {{form.value.estadoPlanillaSelected.descripcion}}</div>
+      </div>
 
     </div>
 
@@ -36,3 +40,5 @@
   </div>
   <app-tabla-pagos [detallePagos]="registros" [deshabilitarTabla]="deshabilitar"></app-tabla-pagos>
 </p-card>
+
+<app-footer-dialog  (cancelarEvent)="cerrarVentana()" [showGuardar]="false"></app-footer-dialog>

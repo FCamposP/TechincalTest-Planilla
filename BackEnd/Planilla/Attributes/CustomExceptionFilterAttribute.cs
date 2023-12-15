@@ -19,12 +19,14 @@ namespace Planilla.Attributes
     {
         private readonly RequestDelegate _next;
 
-        //public CustomExceptionFilterAttribute(RequestDelegate next)
-        //{
-        //    _next = next;
-        //}
         private readonly ErrorService LogErrorsService = new ErrorService();
-        
+
+        /// <summary>
+        /// Captura excepciones no controladas del framework y los guarda en base de datos
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="LogErrorService"></param>
+        /// <returns></returns>
         public async Task Invoke(HttpContext context, ILogErrorger LogErrorService)
         {
             LogErrorsService.Logger = LogErrorService;
@@ -33,7 +35,10 @@ namespace Planilla.Attributes
 
         }
 
-
+        /// <summary>
+        /// Captura los tipos de excepciones ocurridas en el sistema y agrega contenido descriptivo en los mensajes de la respuesta
+        /// </summary>
+        /// <param name="actionExecutedContext"></param>
         public void OnException(ExceptionContext actionExecutedContext)
         {
             Exception ex = actionExecutedContext.Exception;

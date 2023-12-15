@@ -22,12 +22,14 @@ namespace Planilla.Services
 
         private readonly IMapper _mapper;
         private readonly DetallePlanillaService _detallePlanillaService;
+        private readonly EmailService _emailService;
         private List<string> nombreMeses = new List<string>() { "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE" };
 
         public PlanillaService(ApiDBContext context, IAppSettingsModule appSettingsModule, IMapper mapper) : base(context, appSettingsModule)
         {
             _mapper = mapper;
             _detallePlanillaService = new DetallePlanillaService(context, appSettingsModule, mapper);
+            _emailService = new EmailService(context,appSettingsModule,mapper);
         }
 
         public async Task<ResponseWrapperDTO<IList<EncabezadoPlanillaDTO>>> GetAllDTO()
@@ -84,29 +86,37 @@ namespace Planilla.Services
             {
                 try
                 {
+                    var estadoPlanilla = await _dBContext.EstadoPlanilla.Where(x => x.EstadoPlanillaId == registro.EstadoPlanillaId).FirstOrDefaultAsync();
                     var periodoPlanilla = await _dBContext.Periodo.Where(x => x.PeriodoId == registro.PeriodoId).FirstOrDefaultAsync();
                     if (periodoPlanilla != null)
                     {
                         EncabezadoPlanilla registroGuardar = _mapper.Map<EncabezadoPlanilla>(registro);
 
-                        var nuevoEncabezado = await Actualizar(registroGuardar, userId);
-
+                        var nuevoEncabezadoData = await Actualizar(registroGuardar, userId);
+                        var correosEnviados = false;
                         foreach (var detalle in registro.DetallePlanilla)
                         {
                             var empleado = await _dBContext.Empleado.Where(x => x.Codigo == detalle.CodigoEmpleado).FirstOrDefaultAsync();
                             if (empleado != null)
                             {
                                 detalle.EmpleadoId = empleado.EmpleadoId;
-                                detalle.EncabezadoPlanillaId = nuevoEncabezado.Data.EncabezadoPlanillaId;
+                                detalle.EncabezadoPlanillaId = nuevoEncabezadoData.Data.EncabezadoPlanillaId;
                                 DetallePlanilla detalleActualizar = _mapper.Map<DetallePlanilla>(detalle);
+                                if (estadoPlanilla.Codigo == "APROBADO" && registroGuardar.CorreoEnviado == false)
+                                {
+                                    correosEnviados=true;
+                                    await _emailService.EnviarEmailEmpleados(empleado, periodoPlanilla.FechaFin);
 
-                                //await _detallePlanillaService.Actualizar(detalleActualizar, userId);
+                                }
                             }
                             else
                             {
                                 await transaction.RollbackAsync();
                                 response.AddResponseStatus(2, "Bad Request", "Empleado no encontrado con código: " + detalle.CodigoEmpleado);
                             }
+                        }
+                        if(correosEnviados) { 
+                                    nuevoEncabezadoData.Data.CorreoEnviado = true;
                         }
                         await transaction.CommitAsync();
                         response.Data = true;
@@ -132,12 +142,12 @@ namespace Planilla.Services
             {
                 try
                 {
+                    var estadoPlanilla = await _dBContext.EstadoPlanilla.Where(x => x.EstadoPlanillaId == registro.EstadoPlanillaId).FirstOrDefaultAsync();
                     var periodoPlanilla = await _dBContext.Periodo.Where(x => x.PeriodoId == registro.PeriodoId).FirstOrDefaultAsync();
                     if (periodoPlanilla != null)
                     {
-
                         EncabezadoPlanilla registroGuardar = new EncabezadoPlanilla() { PeriodoId = registro.PeriodoId, EstadoPlanillaId = registro.EstadoPlanillaId, Descripcion = "Planilla hasta el " + periodoPlanilla.FechaFin.Value.Date.ToString("yyyy-MM-dd"), FechaCorte = periodoPlanilla.FechaFin.Value };
-                        var nuevoEncabezado = await Crear(registroGuardar, userId);
+                        var nuevoEncabezadoData = await Crear(registroGuardar, userId);
 
                         foreach (var detalle in registro.DetallePlanilla)
                         {
@@ -145,14 +155,21 @@ namespace Planilla.Services
                             if (empleado != null)
                             {
                                 detalle.EmpleadoId = empleado.EmpleadoId;
-                                detalle.EncabezadoPlanillaId = nuevoEncabezado.Data.EncabezadoPlanillaId;
+                                detalle.EncabezadoPlanillaId = nuevoEncabezadoData.Data.EncabezadoPlanillaId;
                                 await _detallePlanillaService.CrearDTO(detalle, userId);
+                                if (estadoPlanilla.Codigo == "APROBADO" && registroGuardar.CorreoEnviado == false)
+                                {
+                                    await _emailService.EnviarEmailEmpleados(empleado, periodoPlanilla.FechaFin);
+                                    nuevoEncabezadoData.Data.CorreoEnviado= true;
+
+                                }
                             }
                             else
                             {
                                 await transaction.RollbackAsync();
                                 response.AddResponseStatus(2, "Bad Request", "Empleado no encontrado con código: " + detalle.CodigoEmpleado);
                             }
+
                         }
                         await transaction.CommitAsync();
                         response.Data = true;
@@ -227,7 +244,9 @@ namespace Planilla.Services
                     int columna = 1;
                     using (var package = new ExcelPackage())
                     {
-                        var worksheet = package.Workbook.Worksheets.Add("Planilla de Pagos");
+
+                        var sheetName = await _dBContext.ConfiguracionGlobal.Where(x => x.Codigo == "SHEETEXCEL").FirstOrDefaultAsync();
+                        var worksheet = package.Workbook.Worksheets.Add(sheetName.Valor);
                         foreach (var column in registros)
                         {
 
@@ -288,7 +307,8 @@ namespace Planilla.Services
                     {
                         using (var package = new ExcelPackage(file.OpenReadStream()))
                         {
-                            ExcelWorksheet worksheet = package.Workbook.Worksheets.Where(x => x.Name == "Planilla de Pagos").FirstOrDefault();
+                            var sheetName = _dBContext.ConfiguracionGlobal.Where(x => x.Codigo == "SHEETEXCEL").FirstOrDefault();
+                            ExcelWorksheet worksheet = package.Workbook.Worksheets.Where(x => x.Name == sheetName.Valor).FirstOrDefault();
                             if (worksheet != null)
                             {
                                 int cantFilas = worksheet.Dimension.Rows;

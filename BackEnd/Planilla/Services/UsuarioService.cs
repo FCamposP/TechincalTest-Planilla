@@ -74,7 +74,8 @@ namespace Planilla.Services
                 registroGuardar = _mapper.Map<UsuarioDTO, Usuario>(registro);
                 if (registro.ActualizarPassword)
                 {
-                    registroGuardar.Password = AesManaged.Encrypt(registro.Password ?? "");
+                    var encription = await _dBContext.ConfiguracionGlobal.Where(x => x.Codigo == "ENCRIPTIONKEY").FirstOrDefaultAsync();
+                    registroGuardar.Password = AesManaged.Encrypt(registro.Password ?? "", encription.Valor);
                 }
                 registroGuardar.Empleado = null;
                 var result = await Actualizar(registroGuardar, userId);

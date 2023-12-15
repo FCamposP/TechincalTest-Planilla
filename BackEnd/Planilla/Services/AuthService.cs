@@ -17,6 +17,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Planilla.DataAccess;
+using Microsoft.EntityFrameworkCore;
 
 namespace Planilla.Services
 {
@@ -35,7 +36,8 @@ namespace Planilla.Services
             if (usuario != null)
             {
                 usuario.Activo = true;
-                usuario.Password = AesManaged.Encrypt(usuario.Password ?? "");
+                var encription = await _dBContext.ConfiguracionGlobal.Where(x => x.Codigo == "ENCRIPTIONKEY").FirstOrDefaultAsync();
+                usuario.Password = AesManaged.Encrypt(usuario.Password ?? "", encription.Valor);
                 response = await Crear(usuario, userId);
             }
             return response;
@@ -56,19 +58,18 @@ namespace Planilla.Services
             return response;
         }
 
-
         private Usuario Autenticar(LoginDTO login)
         {
             Usuario? user = null;
             if (login != null)
             {
+                var encription = _dBContext.ConfiguracionGlobal.Where(x => x.Codigo == "ENCRIPTIONKEY").FirstOrDefault();
+
                 user = _items.Where(x => x.UserName.ToLower() == login.Username.ToLower()
-                && x.Password == AesManaged.Encrypt(login.Password) && x.Activo == true).FirstOrDefault();
+                && x.Password == AesManaged.Encrypt(login.Password, encription.Valor) && x.Activo == true).FirstOrDefault();
             }
             return user;
         }
-
-
 
         private async Task<TokenDTO> GenerarToken(Usuario usuario, IConfiguration _config)
         {
@@ -93,7 +94,7 @@ namespace Planilla.Services
                 new Claim(ClaimTypes.Surname, empleadoResponse.Data.PrimerApellido??""),
                 new Claim("Id" , Convert.ToString(usuario.UsuarioId))
             };
-
+                //hacer parametrizable el tiempo de validez del token
                 DateTime expireAt = DateTime.Now.AddMinutes(10);
                 DateTime dateTime = DateTime.ParseExact(expireAt.ToString("dd/MM/yyyy HH:mm:ss"), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 DateTime utcDateTime = dateTime.ToUniversalTime();

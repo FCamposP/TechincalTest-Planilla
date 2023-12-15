@@ -42,13 +42,20 @@ namespace Planilla
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Mapeo de configuracion del modulo configurado en appsetting.json
             services.Configure<ConfiguracionModulo>(Configuration.GetSection("ConfiguracionModulo"));
+            //Mapeo de configuración para JWT en appsetting.json
             services.Configure<AppSettingsJwt>(Configuration.GetSection("Jwt"));
-            services.AddControllers();
+            services.AddControllers(config =>
+            {
+                //config.Filters.Add(new CustomAuthorizeAttribute());
+            });
             services.AddSwaggerGen();
 
+            //Configuracion de AutoMapper para casteo automático entre Entidades y DTO
             services.AddAutoMapper(typeof(AutoMapperProfiles));
 
+            //Obtiene cadena de conexión a base de datos configurada en appsetting.json
             var connectionString = Configuration.GetConnectionString("SqlServerQEQDB");
             services.AddDbContext<ApiDBContext>(options =>
                 options.UseSqlServer(connectionString));
@@ -60,17 +67,18 @@ namespace Planilla
             services.AddScoped<IJwtUtils, JwtUtils>();
             services.AddScoped<IAppSettingsModule, AppSettingsModule>();
 
+            //Configuración de Swagger
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "QUIEN ES QUIEN API",
-                    Description = "API encargada del mantenimiento necesario para el funcionamiento de Quien es Quien",
+                    Title = "Planilla Fc",
+                    Description = "API de planilla de pagos",
                     TermsOfService = new Uri("https://example.com/terms"),
                     Contact = new OpenApiContact
                     {
-                        Name = "Contacto 1",
+                        Name = "Nombre Empresa",
                         Url = new Uri("https://example.com/contact")
                     },
                     //License = new OpenApiLicense
@@ -89,6 +97,9 @@ namespace Planilla
                     Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
                 });
             });
+
+            //Configuracion de autenticacion JWT 
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.RequireHttpsMetadata = false;

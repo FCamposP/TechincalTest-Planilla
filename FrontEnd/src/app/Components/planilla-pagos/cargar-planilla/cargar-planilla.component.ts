@@ -18,18 +18,16 @@ export class CargarPlanillaComponent implements OnInit {
 
   registros: DetallePlanillaDTO[] = []; // Almacena los datos de Excel
   tamanioMaximo: number = 50000000;
-  listaPeriodos: PeriodoDTO[]=[];
-  listaEstados: EstadoPlanillaDTO[]=[];
-  periodoSelected: PeriodoDTO;
-  estadoSelected:EstadoPlanillaDTO;
-  encabezado:EncabezadoPlanillaDTO;
+  listaPeriodos: PeriodoDTO[] = [];
+  listaEstados: EstadoPlanillaDTO[] = [];
+  encabezado: EncabezadoPlanillaDTO;
   form: FormGroup;
   resultadoExitoso: boolean = false;
   esNuevo: boolean = true;
   registroId: number = -1;
-  actualizarTabla:boolean = false;
-  deshabilitar: boolean=false;
-  constructor(private service: appServices<any>, public config: DynamicDialogConfig, private fb: FormBuilder,public ref: DynamicDialogRef) { }
+  actualizarTabla: boolean = false;
+  deshabilitar: boolean = false;
+  constructor(private service: appServices<any>, public config: DynamicDialogConfig, private fb: FormBuilder, public ref: DynamicDialogRef) { }
 
 
   ngOnInit() {
@@ -39,7 +37,7 @@ export class CargarPlanillaComponent implements OnInit {
     this.form = this.fb.group({
       encabezadoPlanillaId: [-1],
       estadoPlanillaSelected: [new EstadoPlanillaDTO(), Validators.required],
-      periodoActivoSelected:[new PeriodoDTO(), Validators.required],
+      periodoActivoSelected: [new PeriodoDTO(), Validators.required],
     })
 
   }
@@ -58,7 +56,7 @@ export class CargarPlanillaComponent implements OnInit {
 
       this.service.CargarArchivos('planilla', 'PrecargaExcel', formData).subscribe((data: any[]) => {
         if (data) {
-          this.registros=data;
+          this.registros = data;
         }
       }
       );
@@ -78,7 +76,7 @@ export class CargarPlanillaComponent implements OnInit {
     this.service.OtroGet('estadoPlanilla', '', null).subscribe((data: EstadoPlanillaDTO[]) => {
       if (data != null) {
         this.obtenerPeriodos();
-        this.listaEstados=(data);
+        this.listaEstados = (data);
 
       }
     }
@@ -89,10 +87,10 @@ export class CargarPlanillaComponent implements OnInit {
     this.listaPeriodos = [];
     this.service.OtroGet('periodo', '', null).subscribe((data: PeriodoDTO[]) => {
       if (data != null) {
-        this.listaPeriodos=data;
-        if(!this.esNuevo){
+        this.listaPeriodos = data;
+        if (!this.esNuevo) {
           this.obtenerDetalleRegistro();
-        }else{
+        } else {
           this.obtenerDatosIniciales();
         }
       }
@@ -107,39 +105,39 @@ export class CargarPlanillaComponent implements OnInit {
       if (data != null) {
         this.encabezado = data;
         this.form.patchValue({
-          encabezadoPlanillaId:data.encabezadoPlanillaId,
-          estadoPlanillaSelected: this.listaEstados.find(x=>x.estadoPlanillaId==data.estadoPlanillaId),
-          periodoActivoSelected:this.listaPeriodos.find(x=>x.periodoId==data.periodoId),
+          encabezadoPlanillaId: data.encabezadoPlanillaId,
+          estadoPlanillaSelected: this.listaEstados.find(x => x.estadoPlanillaId == data.estadoPlanillaId),
+          periodoActivoSelected: this.listaPeriodos.find(x => x.periodoId == data.periodoId),
         });
-        this.registros=this.encabezado.detallePlanilla;
-        if(this.form.value.estadoPlanillaSelected.codigo=="APROBADO" || !data.habilitado){
-          this.deshabilitar=true;
+        this.registros = this.encabezado.detallePlanilla;
+        if (this.form.value.estadoPlanillaSelected.codigo == "APROBADO" || !data.habilitado) {
+          this.deshabilitar = true;
         }
       }
     }
     );
   }
 
-  obtenerDatosIniciales(){
+  obtenerDatosIniciales() {
     this.service.OtroGet('planilla', 'ObtenerDatosIniciales', null).subscribe((data: EncabezadoPlanillaDTO) => {
       if (data != null) {
         this.form.patchValue({
-          estadoPlanillaSelected: this.listaEstados.find(x=>x.estadoPlanillaId==data.estadoPlanillaId),
-          periodoActivoSelected:this.listaPeriodos.find(x=>x.periodoId==data.periodoId),
+          estadoPlanillaSelected: this.listaEstados.find(x => x.estadoPlanillaId == data.estadoPlanillaId),
+          periodoActivoSelected: this.listaPeriodos.find(x => x.periodoId == data.periodoId),
         });
       }
     }
     );
   }
 
-  onSubmit(){
+  onSubmit() {
     this.encabezado = {
       ...this.encabezado,
-      periodoId:this.form.value.periodoActivoSelected.periodoId,
+      periodoId: this.form.value.periodoActivoSelected.periodoId,
       estadoPlanillaId: this.form.value.estadoPlanillaSelected.estadoPlanillaId,
-      detallePlanilla:this.registros
+      detallePlanilla: this.registros
     }
-    if(this.form.valid){
+    if (this.form.valid) {
       this.guardarRegistro()
     }
   }
@@ -164,15 +162,17 @@ export class CargarPlanillaComponent implements OnInit {
   }
 
   actualizarRegistro() {
-    this.encabezado.detallePlanilla=this.registros.filter(x=>x.actualizar==true);
+    if (this.form.value.estadoPlanillaSelected.codigo != "APROBADO") {
+      this.encabezado.detallePlanilla = this.registros.filter(x => x.actualizar == true);
+    }
     this.encabezado.detallePlanilla.forEach(element => {
       delete element.actualizar;
-      element.salario=parseFloat(element.salario.toString());
-      element.descuentoAfp=parseFloat(element.descuentoAfp.toString());
-      element.descuentoIsss=parseFloat(element.descuentoIsss.toString());
-      element.descuentoRenta=parseFloat(element.descuentoRenta.toString());
-      element.otrosDescuentos=parseFloat(element.otrosDescuentos.toString());
-      element.sueldoNeto=parseFloat(element.sueldoNeto.toString());
+      element.salario = parseFloat(element.salario.toString());
+      element.descuentoAfp = parseFloat(element.descuentoAfp.toString());
+      element.descuentoIsss = parseFloat(element.descuentoIsss.toString());
+      element.descuentoRenta = parseFloat(element.descuentoRenta.toString());
+      element.otrosDescuentos = parseFloat(element.otrosDescuentos.toString());
+      element.sueldoNeto = parseFloat(element.sueldoNeto.toString());
     });
     this.service.OtroPut('planilla', '', this.encabezado).subscribe((data: boolean) => {
       if (data != null) {
@@ -182,5 +182,9 @@ export class CargarPlanillaComponent implements OnInit {
       }
     }
     );
+  }
+
+  cerrarVentana() {
+    this.ref.close();
   }
 }

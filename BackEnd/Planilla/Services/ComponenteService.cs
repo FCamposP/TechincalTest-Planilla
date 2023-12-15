@@ -160,6 +160,7 @@ namespace Planilla.Services
             ResponseWrapperDTO<List<ComponenteNavigation>> response = new ResponseWrapperDTO<List<ComponenteNavigation>>();
             try
             {
+                
                 List<Componente> componentesProcesar = new List<Componente>();
                 List<ComponenteNavigation> opcionesSinAgrupar = new List<ComponenteNavigation>();
                 var rolesUsuario = await _dBContext.RolUsuario.Include(x => x.Rol).Where(x => x.UsuarioId == userId).ToListAsync();

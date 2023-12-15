@@ -11,9 +11,13 @@ namespace Planilla.Utilities
 {
     public class AesManaged
     {
-        public static string Encrypt(string clearText)
+        /// <summary>
+        /// Metodo para encriptar un texto
+        /// </summary>
+        /// <param name="clearText"></param>
+        /// <returns></returns>
+        public static string Encrypt(string clearText, string encryptionKey)
         {
-            string encryptionKey = "MAKV2SPBNI67812";
             byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
             using (Aes encryptor = Aes.Create())
             {
@@ -32,9 +36,9 @@ namespace Planilla.Utilities
             }
             return clearText;
         }
-        public static string Decrypt(string cipherText)
+
+        public static string Decrypt(string cipherText, string encryptionKey)
         {
-            string encryptionKey = "MAKV2SPBNI67812";
             byte[] cipherBytes = Convert.FromBase64String(cipherText);
             using (Aes encryptor = Aes.Create())
             {

@@ -1,6 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { BoletaPagoDTO } from 'src/app/DTO/BoletaPagoDTO';
 import { appServices } from 'src/app/Services/appServices';
 
@@ -14,7 +14,7 @@ export class DetalleBoletaComponent implements OnInit {
   registroId: number = -1;
   detalleBoletaPago: BoletaPagoDTO;
   
-  constructor(private service: appServices<any>, public config: DynamicDialogConfig) { }
+  constructor(private service: appServices<any>, public config: DynamicDialogConfig, public ref: DynamicDialogRef,) { }
   
   ngOnInit() {
     this.registroId = this.config.data.registroId;
@@ -31,4 +31,10 @@ export class DetalleBoletaComponent implements OnInit {
     }
     );
   }
+
+  cerrarVentana() {
+    this.ref.close();
+  }
+
 }
+

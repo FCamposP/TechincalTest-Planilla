@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Planilla.Controllers
 {
+
     public class ColumnaExcelController : ControllerBaseCustom
     {
         readonly protected ColumnaExcelService _service;

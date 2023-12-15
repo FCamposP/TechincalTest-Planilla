@@ -54,7 +54,7 @@ export class AuthenticationComponent implements OnInit {
               if (data != null) {
                 this.shared.PermisosOpciones = JSON.stringify(data);
                 this.errorLogin = false;
-                this.router.navigate(['mantenimiento']);
+                this.router.navigate(['home']);
               }
             }
             );

@@ -56,6 +56,11 @@ namespace Planilla.Controllers
             return await _service.EliminarMultiples(ids, userId);
         }
 
+        /// <summary>
+        /// Obtiene los grupos y vistas permitidos al usuario
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("[action]")]
         public async Task<ResponseWrapperDTO<List<ComponenteNavigation>>> ObtenerNavegacion(int userId)

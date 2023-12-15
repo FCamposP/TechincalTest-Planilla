@@ -130,6 +130,7 @@ import { PlanillaPagosComponent } from "./Components/planilla-pagos/planilla-pag
 import { BoletaPagoComponent } from "./Components/boleta-pago/boleta-pago.component";
 import { CargarPlanillaComponent } from "./Components/planilla-pagos/cargar-planilla/cargar-planilla.component";
 import { TablaPagosComponent } from "./Components/planilla-pagos/tabla-pagos/tabla-pagos.component";
+import { DetalleBoletaComponent } from "./Components/boleta-pago/detalle-boleta/detalle-boleta.component";
 
 FullCalendarModule.registerPlugins([
     dayGridPlugin,
@@ -264,7 +265,8 @@ FullCalendarModule.registerPlugins([
         BoletaPagoComponent,
         CargarPlanillaComponent,
         TablaPagosComponent,
-        BoletaPagoComponent
+        BoletaPagoComponent,
+        DetalleBoletaComponent
 
     ],
     entryComponents: [

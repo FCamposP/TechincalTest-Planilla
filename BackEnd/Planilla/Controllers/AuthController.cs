@@ -34,6 +34,11 @@ namespace Planilla.Controllers
             _authService = new AuthService(dBContext,appSettingsModule,mapper);
         }
 
+        /// <summary>
+        /// Metodo anonimo para realizar logeo en aplicacion angular
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
         [Route("[action]")]
@@ -42,6 +47,12 @@ namespace Planilla.Controllers
             return await _authService.LoginUsuario(login, _configuration);
         }
 
+        /// <summary>
+        /// Metodo anonimo para registrar un nuevo usuario de prueba
+        /// </summary>
+        /// <param name="usuario"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
         [Route("Register")]
@@ -50,6 +61,10 @@ namespace Planilla.Controllers
             return await _authService.RegistrarUsuario(usuario, userId);
         }
 
+        /// <summary>
+        /// Refresca token de usuario
+        /// </summary>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet]
         [Route("refresh")]
@@ -64,6 +79,10 @@ namespace Planilla.Controllers
             return await GetCurrentUser();
         }
 
+        /// <summary>
+        /// Obtiene el detalle del usuario en el token de la peticion
+        /// </summary>
+        /// <returns></returns>
         private async Task<ResponseWrapperDTO<Usuario>> GetCurrentUser()
         {
             ResponseWrapperDTO<Usuario> response = new ResponseWrapperDTO<Usuario>();

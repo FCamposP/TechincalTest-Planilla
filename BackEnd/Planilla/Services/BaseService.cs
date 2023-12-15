@@ -18,13 +18,11 @@ namespace Planilla.Services
         public ApiDBContext _dBContext;
         protected readonly DbSet<T> _items;
         public ExceptionLogHandler exceptionHandler;
-        protected readonly EventLogHandler eventLogHandler;
         public BaseService(ApiDBContext context, IAppSettingsModule appSettingsModule)
         {
             _dBContext = context;
             _items = context.Set<T>();
             exceptionHandler = new ExceptionLogHandler(context, appSettingsModule);
-            eventLogHandler = new EventLogHandler(context, appSettingsModule);
         }
 
         public async Task<ResponseWrapperDTO<IList<T>>> GetAll()

@@ -20,6 +20,9 @@ namespace Planilla.Attributes
             DefinirListaPermitida();
         }
 
+        /// <summary>
+        /// Recursos a los que no se les valida permiso 
+        /// </summary>
         private void DefinirListaPermitida()
         {
             valoresPermitidos.Add("/swagger");

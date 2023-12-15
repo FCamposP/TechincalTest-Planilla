@@ -34,9 +34,7 @@ export class EmpleadoFormComponent implements OnInit {
     this.registroId = this.config.data.registroId;
 
     this.obtenerPuestos();
-    if(!this.esNuevo){
-      this.obtenerDetalleRegistro();
-    }
+
 
     this.form = this.fb.group({
       puestoSelected: [new PuestoDTO(), Validators.required],
@@ -72,6 +70,9 @@ export class EmpleadoFormComponent implements OnInit {
     this.listaPuestos = [];
     this.service.OtroGet('puesto', '', null).subscribe((data: PuestoDTO[]) => {
       if (data != null) {
+        if(!this.esNuevo){
+          this.obtenerDetalleRegistro();
+        }
         data.forEach(element => {
           this.listaPuestos.push({ nombre: element.nombre, descripcion: element.descripcion, activo: element.activo, puestoId: element.puestoId });
         });

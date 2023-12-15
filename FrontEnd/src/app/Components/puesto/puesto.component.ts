@@ -68,7 +68,7 @@ export class PuestoComponent implements OnInit, OnDestroy {
         });
 
         this.ref.onClose.subscribe((resultadoExitoso: boolean) => {
-            if (resultadoExitoso) {
+            if (resultadoExitoso==true) {
                 this.ObtenerRegistros();
                 // this.messageService.add({severity:'info', summary: 'Car Selected', detail:'Vin:' + car.vin});
             }
